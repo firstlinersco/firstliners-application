@@ -19,10 +19,10 @@
   <style>
     /* ── DESIGN TOKENS ── */
     :root, [data-theme="light"] {
-      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xs: clamp(0.875rem, 0.85rem + 0.25vw, 1rem);
+      --text-sm: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);
+      --text-base: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+      --text-lg: clamp(1.25rem, 1.1rem + 0.75vw, 1.625rem);
       --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
       --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3rem);
 
@@ -994,8 +994,10 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      min-width: 0;
+      flex: 1;
     }
-    .header-brand-text { min-width: 0; }
+    .header-brand-text { min-width: 0; overflow: visible; }
 
     .header-brand-eyebrow {
       display: flex;
@@ -1021,14 +1023,14 @@
 
     .header-brand-name {
       font-family: var(--font-display), 'Georgia', serif !important;
-      font-size: clamp(1.15rem, 2.5vw, 1.85rem) !important;
+      font-size: clamp(1.3rem, 2.2vw, 1.85rem) !important;
       line-height: 1.2 !important;
       font-style: normal !important;
       font-weight: 400 !important;
       margin: 0 0 0.25rem !important;
       letter-spacing: -0.01em;
       white-space: nowrap;
-      max-width: 320px;
+      max-width: none;
     }
     .brand-first {
       color: #ffffff;
@@ -1335,7 +1337,7 @@
     .form-input, .form-select, .form-textarea {
       border: 1.5px solid #d4dce8 !important;
       border-radius: 10px !important;
-      font-size: 0.9rem !important;
+      font-size: 1.05rem !important;
       transition: border-color 0.2s, box-shadow 0.2s !important;
     }
     .form-input:focus, .form-select:focus, .form-textarea:focus {
@@ -1437,6 +1439,9 @@
     [data-theme="dark"] body {
       background: #040d1e !important;
     }
+
+    /* Defensive: ensure script/style tags never render as visible text */
+    script, style { display: none !important; }
 
   </style>
 </head>
@@ -3280,9 +3285,9 @@
       const pg = doc.getNumberOfPages();
       fill(...NAVY2); doc.rect(0, PH - 11, PW, 11, 'F');
       fill(...GOLD);  doc.rect(0, PH - 11, PW, 1.2, 'F');
-      set(...WHITE); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+      set(...WHITE); doc.setFont('helvetica','normal'); doc.setFontSize(9);
       doc.text('FirstLiners Abroad Education  ·  Dr. Zeshan Gondal  ·  WA: +92 343 6058898  ·  admissions@firstlinersabroad.cn', ML, PH - 4);
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(9);
       doc.text('Page ' + pg + ' of ' + '—', PW - MR, PH - 4, { align: 'right' });
     }
 
@@ -3312,10 +3317,10 @@
       fill(...GOLD);  doc.rect(ML, y, 4, H, 'F');
       // Number badge
       fill(...GOLD); doc.roundedRect(ML + 7, y + 2, 9, 9, 1.5, 1.5, 'F');
-      set(...NAVY2); doc.setFont('helvetica','bold'); doc.setFontSize(7);
+      set(...NAVY2); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
       doc.text(num, ML + 11.5, y + 7.5, { align:'center' });
       // Title
-      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(10.5);
+      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(12.5);
       doc.text(title, ML + 20, y + 9);
       y += H + 4;
     }
@@ -3326,7 +3331,7 @@
       fill(...LTBLUE); doc.rect(ML, y, CW, 9, 'F');
       draw(...MID); doc.rect(ML, y, CW, 9, 'S');
       fill(...GOLD); doc.rect(ML, y, 3.5, 9, 'F');
-      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(10);
       doc.text(title, ML + 7, y + 6.5);
       y += 12;
     }
@@ -3338,7 +3343,7 @@
       const val = (value || '').toString().trim();
       const disp = val || '—';
       const wrappedLines = doc.splitTextToSize(disp, VW - 8);
-      const rH = Math.max(9, wrappedLines.length * 5.2 + 5);
+      const rH = Math.max(12, wrappedLines.length * 6.5 + 5);
       checkY(rH);
       // Background
       fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
@@ -3347,7 +3352,7 @@
       fill(val ? NAVY[0] : FAINT[0], val ? NAVY[1] : FAINT[1], val ? NAVY[2] : FAINT[2]);
       doc.circle(ML + 3, y + rH/2, 1.4, 'F');
       // Label
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(7);
+      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
       const lblLines = doc.splitTextToSize(label, LW - 8);
       doc.text(lblLines, ML + 6.5, y + rH/2, { baseline:'middle' });
       // Divider
@@ -3355,7 +3360,7 @@
       // Value
       set(val ? DARK[0] : FAINT[0], val ? DARK[1] : FAINT[1], val ? DARK[2] : FAINT[2]);
       doc.setFont('helvetica', val ? 'normal' : 'italic');
-      doc.setFontSize(8.5);
+      doc.setFontSize(10.5);
       doc.text(wrappedLines, ML + LW + 4, y + rH/2, { baseline:'middle' });
       y += rH;
     }
@@ -3364,18 +3369,18 @@
     function rowPair(lbl1, val1, lbl2, val2, shade) {
       const HW = CW / 2;
       const v1 = (val1||'').trim(), v2 = (val2||'').trim();
-      const rH = 9;
+      const rH = 12;
       checkY(rH);
       [[lbl1,v1,0],[lbl2,v2,HW]].forEach(([lbl,val,ox]) => {
         fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML+ox, y, HW, rH, 'F');
         draw(...MID); doc.setLineWidth(0.18); doc.rect(ML+ox, y, HW, rH, 'S');
         fill(val ? NAVY[0]:FAINT[0], val ? NAVY[1]:FAINT[1], val ? NAVY[2]:FAINT[2]);
         doc.circle(ML+ox+3, y+rH/2, 1.3, 'F');
-        set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
-        doc.text(lbl, ML+ox+6.5, y+3.8);
+        set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+        doc.text(lbl, ML+ox+6.5, y+4.5);
         set(val?DARK[0]:FAINT[0], val?DARK[1]:FAINT[1], val?DARK[2]:FAINT[2]);
-        doc.setFont('helvetica', val?'normal':'italic'); doc.setFontSize(8);
-        doc.text(val||'—', ML+ox+6.5, y+7.8);
+        doc.setFont('helvetica', val?'normal':'italic'); doc.setFontSize(10);
+        doc.text(val||'—', ML+ox+6.5, y+9.5);
       });
       y += rH;
     }
@@ -3383,7 +3388,7 @@
     // ── Three-column row ──
     function rowTriple(lbl1,v1, lbl2,v2, lbl3,v3, shade) {
       const TW = CW / 3;
-      const rH = 9;
+      const rH = 12;
       checkY(rH);
       [[lbl1,v1],[lbl2,v2],[lbl3,v3]].forEach(([lbl,val],i) => {
         const vt = (val||'').trim();
@@ -3392,11 +3397,11 @@
         draw(...MID); doc.setLineWidth(0.18); doc.rect(ox, y, TW, rH, 'S');
         fill(vt?NAVY[0]:FAINT[0], vt?NAVY[1]:FAINT[1], vt?NAVY[2]:FAINT[2]);
         doc.circle(ox+3, y+rH/2, 1.3, 'F');
-        set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
-        doc.text(lbl, ox+6.5, y+3.8);
+        set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+        doc.text(lbl, ox+6.5, y+4.5);
         set(vt?DARK[0]:FAINT[0], vt?DARK[1]:FAINT[1], vt?DARK[2]:FAINT[2]);
-        doc.setFont('helvetica', vt?'normal':'italic'); doc.setFontSize(8);
-        doc.text(vt||'—', ox+6.5, y+7.8);
+        doc.setFont('helvetica', vt?'normal':'italic'); doc.setFontSize(10);
+        doc.text(vt||'—', ox+6.5, y+9.5);
       });
       y += rH;
     }
@@ -3411,17 +3416,17 @@
       fill(...FAINT);
       doc.circle(px+pw/2, py+ph*0.32, pw*0.15, 'F');
       doc.ellipse(px+pw/2, py+ph*0.68, pw*0.24, ph*0.18, 'F');
-      set(175, 185, 200); doc.setFont('helvetica','italic'); doc.setFontSize(6.5);
+      set(175, 185, 200); doc.setFont('helvetica','italic'); doc.setFontSize(8);
       doc.text('No photo', px+pw/2, py+ph-5, {align:'center'});
       doc.text('uploaded', px+pw/2, py+ph-1.5, {align:'center'});
     }
 
     // ── Badge pill ──
     function badge(text, bx, by, bgColor, txtColor) {
-      doc.setFontSize(6.5);
+      doc.setFontSize(8);
       const tw = doc.getTextWidth(text) + 7;
-      fill(...bgColor); doc.roundedRect(bx, by, tw, 6.5, 1.5, 1.5, 'F');
-      set(...txtColor); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+      fill(...bgColor); doc.roundedRect(bx, by, tw, 8, 1.5, 1.5, 'F');
+      set(...txtColor); doc.setFont('helvetica','bold'); doc.setFontSize(8);
       doc.text(text, bx+tw/2, by+4.5, {align:'center'});
       return tw + 3.5;
     }
@@ -3444,7 +3449,7 @@
 
     // ── Subject marks table row ──
     function subjectRow(name, obtained, total, grade, shade) {
-      const rH = 8;
+      const rH = 10;
       checkY(rH);
       const c1=CW*0.42, c2=CW*0.19, c3=CW*0.19, c4=CW*0.20;
       fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
@@ -3453,12 +3458,12 @@
       doc.line(ML+c1, y, ML+c1, y+rH);
       doc.line(ML+c1+c2, y, ML+c1+c2, y+rH);
       doc.line(ML+c1+c2+c3, y, ML+c1+c2+c3, y+rH);
-      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(10);
       doc.text(name||'', ML+4, y+rH/2, {baseline:'middle'});
       [[obtained,ML+c1+c2/2],[total,ML+c1+c2+c3/2],[grade,ML+c1+c2+c3+c4/2]].forEach(([v,cx])=>{
         const vt=(v||'').trim();
         set(vt?DARK[0]:FAINT[0], vt?DARK[1]:FAINT[1], vt?DARK[2]:FAINT[2]);
-        doc.setFont('helvetica','normal'); doc.setFontSize(8);
+        doc.setFont('helvetica','normal'); doc.setFontSize(10);
         doc.text(vt||'—', cx, y+rH/2, {baseline:'middle', align:'center'});
       });
       y += rH;
@@ -3475,7 +3480,7 @@
     // Company name & tagline
     set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(11.5);
     doc.text('FIRSTLINERS ABROAD EDUCATION', ML, 14);
-    set(200,215,235); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    set(200,215,235); doc.setFont('helvetica','normal'); doc.setFontSize(9);
     doc.text('Your Gateway to 100+ Partner Universities in China  ·  admissions@firstlinersabroad.cn  ·  WA: +92 343 6058898', ML, 21.5);
 
     // Main title
@@ -3514,9 +3519,9 @@
     // Card top bar
     fill(...NAVY); doc.roundedRect(ML, y, CW, 11, 4, 4, 'F');
     doc.rect(ML, y+7, CW, 4, 'F');
-    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(9);
     doc.text('STUDENT IDENTIFICATION CARD', ML+5, y+7.5);
-    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7);
+    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
     doc.text('FIRSTLINERS ABROAD EDUCATION', ML+CW-5, y+7.5, {align:'right'});
 
     // Student name
@@ -3543,7 +3548,7 @@
       const col = i%2, rowN = Math.floor(i/2);
       const ix = ML+5+col*col2W;
       const iy = infoY0 + rowN*13;
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6);
+      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
       doc.text(lbl, ix, iy);
       set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
       doc.text(val||'—', ix, iy+5.5);
@@ -3579,7 +3584,7 @@
     });
     doc.setLineWidth(0.2);
 
-    set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(5.8);
+    set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
     doc.text('PASSPORT PHOTO', PHOTO_X+PHOTO_W/2, PHOTO_Y+PHOTO_H+5, {align:'center'});
 
     y += cardH + 10;
@@ -3592,7 +3597,7 @@
     qs.forEach(([lbl,val],i) => {
       if (i>0){ draw(...MID); doc.line(ML+i*qsW, y+2.5, ML+i*qsW, y+12.5); }
       const qx = ML+i*qsW+qsW/2;
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(8);
       doc.text(lbl, qx, y+6.5, {align:'center'});
       set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(9);
       doc.text(val||'—', qx, y+13, {align:'center'});
@@ -3603,9 +3608,9 @@
     fill(...LGOLD); doc.roundedRect(ML, y, CW, 13, 3, 3, 'F');
     draw(...GOLD); doc.setLineWidth(0.6); doc.roundedRect(ML, y, CW, 13, 3, 3, 'S'); doc.setLineWidth(0.2);
     fill(...GOLD); doc.roundedRect(ML, y, 4, 13, 3, 3, 'F'); doc.rect(ML, y, 4, 13, 'F');
-    set(120,80,10); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+    set(120,80,10); doc.setFont('helvetica','bold'); doc.setFontSize(9);
     doc.text('CONFIDENTIAL DOCUMENT', ML+8, y+5.5);
-    doc.setFont('helvetica','normal'); doc.setFontSize(6.8);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
     doc.text('This dossier is prepared exclusively for FirstLiners Abroad Education admission processing. Do not share with third parties.', ML+8, y+10.5);
     y += 18;
 
@@ -3629,11 +3634,11 @@
       fill(...(i%2===0 ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
       draw(...MID); doc.setLineWidth(0.18); doc.rect(ML, y, CW, rH, 'S');
       fill(...NAVY); doc.roundedRect(ML+3, y+1.8, 9, 6.5, 1.5, 1.5, 'F');
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(8);
       doc.text(num, ML+7.5, y+6.2, {align:'center'});
       set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
       doc.text(title, ML+16, y+6.5);
-      set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(7);
+      set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
       doc.text(desc, ML+16, y+9);
       y += rH;
     });
@@ -3897,7 +3902,7 @@
       draw(...MID); doc.setLineWidth(0.18); doc.rect(ML, y, CW, rH, 'S');
       if (checked) {
         fill(...GREEN); doc.roundedRect(ML+3, y+2.3, 4.5, 4.5, 1, 1, 'F');
-        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.text('✓', ML+3.7, y+6.2);
+        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.text('✓', ML+3.7, y+6.2);
       } else {
         draw(...FAINT); doc.setLineWidth(0.4); doc.roundedRect(ML+3, y+2.3, 4.5, 4.5, 1, 1, 'S'); doc.setLineWidth(0.18);
       }
@@ -3907,8 +3912,8 @@
       if (tag) {
         const tagColor = tag==='Required' ? NAVY : GOLD;
         const tw = doc.getTextWidth(tag)+7;
-        fill(...tagColor); doc.roundedRect(ML+CW-tw-2, y+2, tw, 5.5, 1, 1, 'F');
-        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+        fill(...tagColor); doc.roundedRect(ML+CW-tw-2, y+2, tw, 7, 1, 1, 'F');
+        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(8);
         doc.text(tag, ML+CW-tw/2-2, y+5.8, {align:'center'});
       }
       y += rH;
@@ -3948,14 +3953,14 @@
     set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
     doc.text('STUDENT DECLARATION', ML+6, y+6.5);
 
-    set(...DARK); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    set(...DARK); doc.setFont('helvetica','normal'); doc.setFontSize(9);
     const declText = 'I, '+fullName+', hereby declare that all information provided in this application is true, complete and correct to the best of my knowledge. I understand that any false or misleading information may result in the cancellation of my application or admission.';
     const declLines = doc.splitTextToSize(declText, CW-14);
     doc.text(declLines, ML+7, y+16.5);
 
     // Signature line
     draw(...MID); doc.line(ML+7, y+30, ML+70, y+30);
-    set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(7);
+    set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
     doc.text('Student Signature', ML+7, y+34.5);
     draw(...MID); doc.line(ML+CW-70, y+30, ML+CW-7, y+30);
     doc.text('Date', ML+CW-70, y+34.5);
@@ -3970,7 +3975,7 @@
       doc.setPage(pg);
       // Overwrite old "Page X of —" with correct total
       fill(...NAVY2); doc.rect(PW-42, PH-11, 42, 11, 'F');
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(9);
       doc.text('Page '+pg+' of '+totalPages, PW-MR, PH-4, {align:'right'});
     }
 
