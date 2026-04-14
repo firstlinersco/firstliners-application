@@ -958,11 +958,23 @@
 
     .header-inner {
       position: relative; z-index: 2;
-      padding: 1.8rem 2rem 1.5rem !important;
+      padding: 1.5rem 2rem 1.2rem !important;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .header-top-row {
       display: flex;
       align-items: center;
-      gap: 1.2rem;
+      gap: 1rem;
+      justify-content: space-between;
       flex-wrap: nowrap;
+    }
+    .header-bottom-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
     }
 
     /* Logo emblem */
@@ -982,8 +994,6 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      flex: 1;
-      min-width: 0;
     }
     .header-brand-text { min-width: 0; }
 
@@ -1011,7 +1021,7 @@
 
     .header-brand-name {
       font-family: var(--font-display), 'Georgia', serif !important;
-      font-size: clamp(1.2rem, 2.8vw, 1.85rem) !important;
+      font-size: clamp(1.15rem, 2.5vw, 1.85rem) !important;
       line-height: 1.2 !important;
       font-style: normal !important;
       font-weight: 400 !important;
@@ -1038,20 +1048,30 @@
     }
 
     .header-brand-tagline {
-      font-size: 0.75rem !important;
-      color: rgba(255,255,255,0.48) !important;
+      font-size: 0.72rem !important;
+      color: rgba(255,255,255,0.45) !important;
       margin: 0 !important;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
       font-weight: 400;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 380px;
     }
 
     /* Trust badges */
+
+    .header-actions-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
     .header-trust-badges {
       display: flex;
       gap: 0.4rem;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       align-items: center;
-      flex-shrink: 0;
     }
     .trust-badge {
       display: inline-flex;
@@ -1091,7 +1111,7 @@
     }
 
     /* Header controls */
-    .header-actions {
+    .header-actions-top {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -1115,18 +1135,14 @@
     }
 
     /* Mobile header */
-    @media (max-width: 1050px) {
-      .header-trust-badges { display: none; }
-    }
-    @media (max-width: 768px) {
-      .header-inner {
-        padding: 1.4rem 1.2rem 1.1rem !important;
-        gap: 0.9rem;
-        flex-wrap: wrap;
-      }
-      .header-brand-name { font-size: 1.25rem !important; white-space: normal !important; }
-      .header-logo-emblem { width: 42px; height: 42px; border-radius: 11px; }
-      .header-brand-eyebrow { white-space: normal !important; }
+
+    @media (max-width: 600px) {
+      .header-inner { padding: 1.2rem 1rem 1rem !important; gap: 0.6rem; }
+      .header-brand-name { font-size: 1.1rem !important; }
+      .header-logo-emblem { width: 38px; height: 38px; border-radius: 9px; }
+      .header-brand-tagline { display: none; }
+      .header-brand-eyebrow { font-size: 0.6rem !important; }
+      .header-bottom-row { display: none; }
     }
 
     /* ── PREMIUM NOTICE STRIPS ── */
@@ -1459,6 +1475,7 @@
     <div class="header-grid-overlay"></div>
 
     <div class="header-inner">
+      <div class="header-top-row">
       <!-- Logo + Brand -->
       <div class="header-brand">
         <div class="header-logo-emblem">
@@ -1481,8 +1498,19 @@
         </div>
       </div>
 
-      <!-- Trust badges (desktop) -->
-      <div class="header-trust-badges">
+      <!-- Controls -->
+      <div class="header-actions-top">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="print-btn" onclick="downloadPDF()" aria-label="Download PDF" title="Download PDF">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </button>
+      </div>
+      </div><!-- end header-top-row -->
+      <div class="header-bottom-row">
+      <!-- Trust badges -->
+      <div class="header-trust-badges" style="display:flex;gap:0.4rem;flex-wrap:wrap;">
         <div class="trust-badge">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span>Trusted Consultancy</span>
@@ -1497,15 +1525,8 @@
         </div>
       </div>
 
-      <!-- Controls -->
-      <div class="header-actions">
-        <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button class="print-btn" onclick="downloadPDF()" aria-label="Download PDF" title="Download filled form as PDF">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        </button>
-      </div>
+      </div><!-- end header-trust-badges -->
+      </div><!-- end header-bottom-row -->
     </div>
 
     <!-- Bottom accent bar -->
@@ -2641,7 +2662,7 @@
         <div class="doc-item" onclick="toggleDoc(this)">
           <div class="doc-header"><div class="doc-checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p class="doc-title">Non-Criminal Record (Police Certificate)</p></div>
           <span class="doc-tag">Required</span>
-          <p class="doc-desc">Police clearance from local police station. Issued within 6 months. Notarized translation if needed. PDF, max 5MB.</p>
+          <p class="doc-desc">Police clearance from local police station. Must be <strong>apostilled</strong>. Issued within 6 months. Notarized translation if not in English/Chinese. PDF, max 5MB.</p>
         </div>
 
         <div class="doc-item" onclick="toggleDoc(this)">
@@ -3582,7 +3603,7 @@
     fill(...LGOLD); doc.roundedRect(ML, y, CW, 13, 3, 3, 'F');
     draw(...GOLD); doc.setLineWidth(0.6); doc.roundedRect(ML, y, CW, 13, 3, 3, 'S'); doc.setLineWidth(0.2);
     fill(...GOLD); doc.roundedRect(ML, y, 4, 13, 3, 3, 'F'); doc.rect(ML, y, 4, 13, 'F');
-    set([120,80,10]); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+    set(120,80,10); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
     doc.text('CONFIDENTIAL DOCUMENT', ML+8, y+5.5);
     doc.setFont('helvetica','normal'); doc.setFontSize(6.8);
     doc.text('This dossier is prepared exclusively for FirstLiners Abroad Education admission processing. Do not share with third parties.', ML+8, y+10.5);
@@ -4003,10 +4024,7 @@
 
   // Initial progress update
   updateProgress();
-</script
 
-</body>
-</html>
   // ════════════════════════════════════════════════════════════
   //  AUTO-SAVE — persists all form data to localStorage
   //  Students won't lose progress on accidental refresh
@@ -4218,6 +4236,7 @@
     });
 
   })();
+</script>
 
-
-
+</body>
+</html>
