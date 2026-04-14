@@ -3793,151 +3793,163 @@
     }
 
     // ────────────────────────────────────────────
-    //  COVER PAGE
+    //  COVER PAGE — PREMIUM REDESIGN
     // ────────────────────────────────────────────
-    // Full-bleed deep navy header
-    fill(...NAVY2); doc.rect(0, 0, PW, 58, 'F');
-    fill(...GOLD);  doc.rect(0, 54, PW, 4, 'F');
-    fill(255,255,255,0.06); doc.rect(0, 0, PW, 58, 'F'); // subtle overlay
 
-    // Company name & tagline
-    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(11.5);
-    doc.text('FIRSTLINERS ABROAD EDUCATION', ML, 14);
-    set(200,215,235); doc.setFont('helvetica','normal'); doc.setFontSize(9);
-    doc.text('Your Gateway to 100+ Partner Universities in China  ·  admissions@firstlinersabroad.cn  ·  WA: +92 343 6058898', ML, 21.5);
-
-    // Main title
-    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(19);
-    doc.text('STUDENT APPLICATION DOSSIER', ML, 38);
-    set(160,185,220); doc.setFont('helvetica','normal'); doc.setFontSize(8);
-    const genDate = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
-    doc.text('Prepared: ' + genDate, ML, 47);
-
-    // Thin accent line at very top
-    fill(...GOLD); doc.rect(0, 0, PW, 2.5, 'F');
-
-    y = 66;
-
-    // ── Student ID card ──
     const fullName = fv('q3') || [fv('q2'),fv('q1')].filter(Boolean).join(' ') || 'NOT PROVIDED';
     const nation   = fv('q6') || '—';
-    const dob      = [fv('q5d'),fv('q5m'),fv('q5y')].filter(Boolean).join('/') || '—';
+    const dob      = [fv('q5d'),fv('q5m'),fv('q5y')].filter(Boolean).join(' / ') || '—';
     const program  = fv('q40') || '—';
     const degree   = rv('q41') || '—';
     const passNum  = fv('passportNum') || '—';
     const nicNo    = fv('nicNum') || '—';
     const bgroup   = fv('bloodGroup') || '—';
     const stdEmail = fv('q28') || fv('q22') || '—';
+    const genDate  = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
 
-    const PHOTO_W = 35, PHOTO_H = 47;
-    const PHOTO_X = ML + CW - PHOTO_W - 3;
-    const TEXT_CW = CW - PHOTO_W - 14;
-    const cardH = 74;
+    // ── FULL-BLEED HERO: top half of page (0–130mm) ──
+    // Deep navy background
+    fill(...NAVY2); doc.rect(0, 0, PW, 130, 'F');
+    // Subtle lighter navy band across middle for depth
+    fill(18, 48, 98); doc.rect(0, 50, PW, 50, 'F');
+    // Gold top bar (thick)
+    fill(...GOLD); doc.rect(0, 0, PW, 4, 'F');
+    // Gold bottom bar
+    fill(...GOLD); doc.rect(0, 127, PW, 3, 'F');
+    // Left vertical gold stripe
+    fill(...GOLD); doc.rect(0, 0, 3, 130, 'F');
+    // Right vertical gold stripe
+    fill(...GOLD); doc.rect(PW-3, 0, 3, 130, 'F');
 
-    // Card shadow effect
-    fill(190,200,220); doc.roundedRect(ML+1.5, y+1.5, CW, cardH, 4, 4, 'F');
-    // Card background
-    fill(245,248,255); doc.roundedRect(ML, y, CW, cardH, 4, 4, 'F');
-    draw(190,200,220); doc.setLineWidth(0.5); doc.roundedRect(ML, y, CW, cardH, 4, 4, 'S'); doc.setLineWidth(0.2);
-    // Card top bar
-    fill(...NAVY); doc.roundedRect(ML, y, CW, 11, 4, 4, 'F');
-    doc.rect(ML, y+7, CW, 4, 'F');
-    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(9);
-    doc.text('STUDENT IDENTIFICATION CARD', ML+5, y+7.5);
-    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
-    doc.text('FIRSTLINERS ABROAD EDUCATION', ML+CW-5, y+7.5, {align:'right'});
+    // ── LOGO AREA (top-left) ──
+    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(13);
+    doc.text('FIRSTLINERS ABROAD EDUCATION', ML+4, 18);
+    set(170, 195, 230); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+    doc.text('admissions@firstlinersabroad.cn  ·  WA: +92 343 6058898', ML+4, 26);
+
+    // Horizontal rule under logo
+    fill(40, 72, 125); doc.rect(ML+4, 30, CW-8, 0.6, 'F');
+
+    // ── MAIN TITLE — centered, large ──
+    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(32);
+    doc.text('STUDENT', PW/2, 62, {align:'center'});
+    doc.setFontSize(32);
+    doc.text('APPLICATION', PW/2, 84, {align:'center'});
+    // "DOSSIER" in gold
+    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(32);
+    doc.text('DOSSIER', PW/2, 106, {align:'center'});
+
+    // Decorative rule under title
+    fill(...GOLD); doc.rect(PW/2-30, 112, 60, 1.5, 'F');
+
+    // Tagline
+    set(180, 205, 240); doc.setFont('helvetica','normal'); doc.setFontSize(9);
+    doc.text('Your Gateway to 100+ Partner Universities in China', PW/2, 122, {align:'center'});
+
+    // Date stamp — bottom right of header
+    set(140,165,205); doc.setFont('helvetica','normal'); doc.setFontSize(8);
+    doc.text('Prepared: ' + genDate, PW - ML - 4, 122, {align:'right'});
+
+    y = 140;
+
+    // ── STUDENT PROFILE CARD ──
+    const CARD_H = 88;
+    const PHOTO_W = 44, PHOTO_H = 60;
+    const PHOTO_X = ML + CW - PHOTO_W;
+    const INFO_W  = CW - PHOTO_W - 8;
+
+    // Card: light background with navy left accent bar
+    fill(248, 250, 255); doc.roundedRect(ML, y, CW, CARD_H, 4, 4, 'F');
+    fill(...NAVY); doc.roundedRect(ML, y, 5, CARD_H, 4, 4, 'F'); doc.rect(ML+3, y, 2, CARD_H, 'F');
+    draw(195, 205, 225); doc.setLineWidth(0.5); doc.roundedRect(ML, y, CW, CARD_H, 4, 4, 'S'); doc.setLineWidth(0.2);
 
     // Student name
-    set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(15);
-    const nameLines = doc.splitTextToSize(fullName.toUpperCase(), TEXT_CW);
-    doc.text(nameLines, ML+5, y+22);
-    const nameBH = nameLines.length * 6.5;
+    set(...NAVY2); doc.setFont('helvetica','bold'); doc.setFontSize(20);
+    const nameLines = doc.splitTextToSize(fullName.toUpperCase(), INFO_W - 6);
+    doc.text(nameLines, ML+10, y+17);
+    const nameBH = nameLines.length * 10;
 
-    // Horizontal rule
-    fill(...MID); doc.rect(ML+5, y+24+nameBH, TEXT_CW, 0.4, 'F');
+    // Gold separator
+    fill(...GOLD); doc.rect(ML+10, y+20+nameBH, INFO_W-14, 1, 'F');
 
-    // 6 info fields in 2 columns
+    // 6 info fields
     const infoF = [
       ['NATIONALITY',   nation],
       ['DATE OF BIRTH', dob],
       ['PASSPORT NO.',  passNum],
-      ['STUDENT EMAIL', stdEmail.length>26 ? stdEmail.substring(0,24)+'…' : stdEmail],
-      ['PROGRAM',       program.length>22 ? program.substring(0,20)+'…' : program],
       ['DEGREE LEVEL',  degree],
+      ['PROGRAM',       program.length>24 ? program.substring(0,22)+'…' : program],
+      ['BLOOD GROUP',   bgroup],
     ];
-    const col2W = TEXT_CW / 2;
-    const infoY0 = y + 27 + nameBH;
-    infoF.forEach(([lbl,val],i) => {
-      const col = i%2, rowN = Math.floor(i/2);
-      const ix = ML+5+col*col2W;
-      const iy = infoY0 + rowN*13;
+    const colW2 = (INFO_W - 6) / 2;
+    const infoY0 = y + 25 + nameBH;
+    infoF.forEach(([lbl, val], i) => {
+      const col = i % 2;
+      const rowN = Math.floor(i / 2);
+      const ix = ML + 10 + col * colW2;
+      const iy = infoY0 + rowN * 17;
       set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
       doc.text(lbl, ix, iy);
-      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
-      doc.text(val||'—', ix, iy+5.5);
+      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(10.5);
+      doc.text(val || '—', ix, iy + 7);
     });
 
-    // Badges
-    let bx = ML+5;
-    const by2 = y + cardH - 9;
-    [['BLD: '+bgroup, NAVY, WHITE],['CNIC: '+nicNo, [35,55,95], WHITE]].forEach(([txt,bg,tc])=>{
-      bx += badge(txt, bx, by2, bg, tc);
-    });
+    // CNIC line
+    set(100,115,140); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+    doc.text('CNIC: ' + nicNo, ML+10, y + CARD_H - 7);
 
-    // Passport photo box
-    const PHOTO_Y = y + 12;
-    fill(240,244,252); doc.roundedRect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 3, 3, 'F');
-
+    // ── PHOTO BOX (right side of card) ──
+    const PHOTO_Y = y + (CARD_H - PHOTO_H) / 2;
     const photoSrc = window.photoDataUrl || null;
     if (photoSrc && photoSrc.startsWith('data:image')) {
       try {
         const fmt = photoSrc.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-        doc.addImage(photoSrc, fmt, PHOTO_X+0.5, PHOTO_Y+0.5, PHOTO_W-1, PHOTO_H-1);
-        draw(...NAVY); doc.setLineWidth(0.8);
-        doc.roundedRect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 3, 3, 'S');
+        doc.addImage(photoSrc, fmt, PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H);
+        draw(...NAVY); doc.setLineWidth(1.5);
+        doc.rect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 'S');
         doc.setLineWidth(0.2);
       } catch(e) { _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H); }
     } else { _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H); }
-
-    // Gold corner marks
-    draw(...GOLD); doc.setLineWidth(1.0);
+    // Gold corner brackets on photo
+    draw(...GOLD); doc.setLineWidth(1.5);
     [[PHOTO_X,PHOTO_Y],[PHOTO_X+PHOTO_W,PHOTO_Y],[PHOTO_X,PHOTO_Y+PHOTO_H],[PHOTO_X+PHOTO_W,PHOTO_Y+PHOTO_H]].forEach(([cx,cy])=>{
-      const dx=cx===PHOTO_X?5:-5, dy=cy===PHOTO_Y?5:-5;
+      const dx=cx===PHOTO_X?7:-7, dy=cy===PHOTO_Y?7:-7;
       doc.line(cx,cy+dy,cx,cy); doc.line(cx,cy,cx+dx,cy);
     });
     doc.setLineWidth(0.2);
+    set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(8);
+    doc.text('PHOTO', PHOTO_X+PHOTO_W/2, PHOTO_Y+PHOTO_H+5, {align:'center'});
 
-    set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-    doc.text('PASSPORT PHOTO', PHOTO_X+PHOTO_W/2, PHOTO_Y+PHOTO_H+5, {align:'center'});
+    y += CARD_H + 8;
 
-    y += cardH + 10;
-
-    // ── Quick stats bar ──
-    const qs = [['Sections','10'],['Degree',degree],['Program',program.length>18?program.substring(0,16)+'…':program],['Nationality',nation]];
-    fill(...LTBLUE); doc.roundedRect(ML, y, CW, 20, 3, 3, 'F');
-    draw(...MID); doc.roundedRect(ML, y, CW, 20, 3, 3, 'S');
-    const qsW = CW/qs.length;
+    // ── NAVY QUICK-INFO STRIP ──
+    fill(...NAVY2); doc.roundedRect(ML, y, CW, 20, 3, 3, 'F');
+    // Top + bottom gold accent lines
+    fill(...GOLD); doc.roundedRect(ML, y, CW, 1.5, 3, 3, 'F'); doc.rect(ML, y+1, CW, 0.5, 'F');
+    fill(...GOLD); doc.rect(ML, y+18.5, CW, 1.5, 'F');
+    const qs = [['DEGREE',degree],['PROGRAM',program.length>20?program.substring(0,18)+'…':program],['NATIONALITY',nation],['EMAIL',stdEmail.length>22?stdEmail.substring(0,20)+'…':stdEmail]];
+    const qsW = CW / qs.length;
     qs.forEach(([lbl,val],i) => {
-      if (i>0){ draw(...MID); doc.line(ML+i*qsW, y+3, ML+i*qsW, y+17); }
-      const qx = ML+i*qsW+qsW/2;
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(9);
+      if (i>0){ fill(35,62,108); doc.rect(ML+i*qsW, y+3, 0.4, 14, 'F'); }
+      const qx = ML + i*qsW + qsW/2;
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7);
       doc.text(lbl, qx, y+8, {align:'center'});
-      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(11);
+      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(9);
       doc.text(val||'—', qx, y+17, {align:'center'});
     });
     y += 26;
 
-    // ── Confidential banner ──
-    fill(...LGOLD); doc.roundedRect(ML, y, CW, 17, 3, 3, 'F');
-    draw(...GOLD); doc.setLineWidth(0.6); doc.roundedRect(ML, y, CW, 17, 3, 3, 'S'); doc.setLineWidth(0.2);
-    fill(...GOLD); doc.roundedRect(ML, y, 5, 17, 3, 3, 'F'); doc.rect(ML, y, 5, 17, 'F');
-    set(120,80,10); doc.setFont('helvetica','bold'); doc.setFontSize(11);
-    doc.text('CONFIDENTIAL DOCUMENT', ML+10, y+7);
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    doc.text('This dossier is prepared exclusively for FirstLiners Abroad Education admission processing. Do not share with third parties.', ML+10, y+13.5);
-    y += 22;
+    // ── CONFIDENTIAL NOTICE ──
+    fill(252,248,235); doc.roundedRect(ML, y, CW, 13, 2, 2, 'F');
+    draw(...GOLD); doc.setLineWidth(0.5); doc.roundedRect(ML, y, CW, 13, 2, 2, 'S'); doc.setLineWidth(0.2);
+    fill(...GOLD); doc.roundedRect(ML, y, 4, 13, 2, 2, 'F'); doc.rect(ML+2, y, 2, 13, 'F');
+    set(100,70,10); doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    doc.text('CONFIDENTIAL', ML+9, y+5);
+    set(75,55,15); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+    doc.text('For FirstLiners Abroad Education admission processing only. Do not share with third parties.', ML+9, y+10.5);
+    y += 19;
 
-    // ── Table of contents ──
+    // ── TABLE OF CONTENTS ──
     subHead('TABLE OF CONTENTS');
     const toc = [
       ['01','Personal Information','Passport, NIC, blood group, personal details'],
@@ -3969,7 +3981,6 @@
     y += 8;
     addFooter();
 
-    // ════════════════════════════════════════════════
     //  PAGE 2 — SECTION 01: PERSONAL INFORMATION
     // ════════════════════════════════════════════════
     doc.addPage(); y = MT + 2; addPageBg();
