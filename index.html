@@ -688,68 +688,138 @@
     }
 
     /* ── YOUTUBE BANNER ── */
-    .youtube-banner {
-      background: linear-gradient(135deg, #120505 0%, #2d0a0a 40%, #1a0707 100%);
+    /* ── YOUTUBE VIDEO GALLERY ── */
+    .yt-section {
+      background: linear-gradient(160deg, #0d0d0d 0%, #1a0505 50%, #0d0d0d 100%);
       border-radius: var(--radius-xl);
-      padding: 3rem 2rem;
+      padding: 2.5rem 2rem 2rem;
       margin-top: 2.5rem;
-      text-align: center;
       position: relative; overflow: hidden;
-      box-shadow: 0 16px 50px rgba(180,0,0,0.25), 0 4px 16px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,50,50,0.15);
+      border: 1px solid rgba(255,50,50,0.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     }
-    .youtube-banner::before {
+    .yt-section::before {
       content:''; position:absolute; inset:0;
-      background: radial-gradient(ellipse 65% 65% at 50% 50%, rgba(255,0,0,0.09) 0%, transparent 65%);
+      background: radial-gradient(ellipse 60% 50% at 20% 0%, rgba(255,0,0,0.07) 0%, transparent 60%);
       pointer-events:none;
     }
-    .youtube-banner::after {
-      content:''; position:absolute; bottom:0; left:0; right:0; height:2.5px;
-      background: linear-gradient(90deg, transparent, #ff0000, #ff6b6b, #ff0000, transparent);
+    .yt-section-header { margin-bottom: 1.75rem; }
+    .yt-logo-row {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 0.75rem; flex-wrap: wrap;
     }
-    .yt-icon-wrap {
-      display: inline-flex; align-items:center; justify-content:center;
-      width: 76px; height: 76px; border-radius: 50%;
-      background: linear-gradient(135deg, #cc0000, #ff0000);
-      box-shadow: 0 8px 24px rgba(200,0,0,0.45);
-      margin: 0 auto 1.25rem;
-      animation: pulse-glow 2.5s ease-in-out infinite;
+    .yt-red-icon {
+      display: flex; align-items:center; justify-content:center;
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, #cc0000, #ff2200);
+      box-shadow: 0 6px 20px rgba(200,0,0,0.4);
+      flex-shrink: 0;
     }
-    .yt-title {
+    .yt-section-title {
       font-family: var(--font-display, 'Instrument Serif', serif);
-      font-size: clamp(1.2rem, 3vw, 1.75rem);
-      color: #ffffff; margin-bottom: 0.6rem; line-height: 1.3;
+      font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+      color: #ffffff; margin: 0 0 0.15rem; line-height: 1.2;
     }
-    .yt-subtitle {
-      font-size: 0.9rem; color: rgba(255,255,255,0.58);
-      margin: 0 auto 1.75rem; max-width: 480px; line-height: 1.6;
+    .yt-section-sub {
+      font-size: 0.8rem; color: rgba(255,255,255,0.4);
+      margin: 0; letter-spacing: 0.02em;
     }
-    .btn-subscribe {
-      display: inline-flex; align-items:center; gap: 0.6rem;
-      padding: 0.8rem 2.5rem;
-      background: linear-gradient(135deg, #aa0000, #dd0000, #ff3333);
-      color: #fff; border: none; border-radius: 9999px;
-      font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
-      font-size: 0.95rem; font-weight: 800;
-      cursor: pointer; letter-spacing: 0.06em;
-      text-decoration: none; text-transform: uppercase;
-      box-shadow: 0 6px 22px rgba(180,0,0,0.45);
-      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    .yt-subscribe-btn {
+      display: inline-flex; align-items:center; gap: 0.5rem;
+      margin-left: auto;
+      padding: 0.6rem 1.4rem;
+      background: linear-gradient(135deg, #cc0000, #ff2200);
+      color: #fff; border-radius: 9999px;
+      font-size: 0.82rem; font-weight: 700;
+      text-decoration: none; white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(200,0,0,0.4);
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
     }
-    .btn-subscribe:hover {
-      transform: translateY(-3px) scale(1.04);
-      box-shadow: 0 12px 32px rgba(180,0,0,0.55);
-      filter: brightness(1.1);
+    .yt-subscribe-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,0,0,0.5); filter: brightness(1.1); }
+    .yt-section-desc {
+      font-size: 0.88rem; color: rgba(255,255,255,0.5);
+      line-height: 1.6; margin: 0;
     }
-    .btn-subscribe:active { transform: translateY(0) scale(1); }
-    .yt-stats {
-      display: flex; gap: 2rem; justify-content: center;
-      margin-top: 1.5rem; flex-wrap: wrap;
+
+    /* Video grid */
+    .yt-video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
-    .yt-stat { text-align:center; }
-    .yt-stat-num { font-size: 1.1rem; font-weight: 800; color: #ff6b6b; display:block; }
-    .yt-stat-lbl { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.08em; }
-    .yt-handle { margin-top: 1rem; font-size: 0.72rem; color: rgba(255,255,255,0.3); letter-spacing:0.05em; }
+    @media (max-width: 900px) { .yt-video-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .yt-video-grid { grid-template-columns: 1fr; } }
+
+    .yt-video-card {
+      display: block; text-decoration: none;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; overflow: hidden;
+      transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+      cursor: pointer;
+    }
+    .yt-video-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,50,50,0.35);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    }
+    .yt-video-card:hover .yt-play-btn { opacity: 1; transform: translate(-50%,-50%) scale(1.1); }
+    .yt-video-card:hover .yt-thumb { filter: brightness(0.75); }
+
+    .yt-thumb-wrap {
+      position: relative; padding-top: 56.25%; /* 16:9 */
+      overflow: hidden; background: #111;
+    }
+    .yt-thumb {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: filter 0.22s;
+      display: block;
+    }
+    .yt-play-btn {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(200,0,0,0.92);
+      display: flex; align-items:center; justify-content:center;
+      opacity: 0;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .yt-play-btn svg { margin-left: 3px; }
+    .yt-duration {
+      position: absolute; bottom: 6px; right: 8px;
+      background: rgba(0,0,0,0.82);
+      color: #fff; font-size: 0.72rem; font-weight: 700;
+      padding: 2px 6px; border-radius: 4px;
+    }
+
+    .yt-card-body { padding: 0.75rem 0.9rem 0.9rem; }
+    .yt-card-title {
+      font-size: 0.875rem; font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.4; margin: 0 0 0.4rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .yt-card-meta {
+      font-size: 0.75rem; color: rgba(255,255,255,0.35);
+    }
+
+    .yt-section-footer { text-align: center; padding-top: 0.5rem; }
+    .yt-view-all {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      color: rgba(255,255,255,0.5); font-size: 0.85rem;
+      text-decoration: none; border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.5rem 1.25rem; border-radius: 9999px;
+      transition: all 0.2s;
+    }
+    .yt-view-all:hover { color: #fff; border-color: rgba(255,50,50,0.4); background: rgba(255,50,50,0.08); }
 
     /* ── FOOTER UPGRADE ── */
     .site-footer, .app-footer {
@@ -2902,23 +2972,107 @@
   </div>
 </div>
 
-  <!-- ── YOUTUBE SUBSCRIBE BANNER ── -->
-  <div class="youtube-banner">
-    <div class="yt-icon-wrap">
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+  <!-- ── YOUTUBE VIDEO GALLERY ── -->
+  <div class="yt-section">
+    <div class="yt-section-header">
+      <div class="yt-logo-row">
+        <div class="yt-red-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        </div>
+        <div>
+          <h3 class="yt-section-title">Dr. Zeshan Gondal</h3>
+          <p class="yt-section-sub">Free Guidance · China MBBS Expert · 100+ Partner Universities</p>
+        </div>
+        <a href="https://www.youtube.com/@ZeshanGondal" target="_blank" rel="noopener noreferrer" class="yt-subscribe-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          Subscribe Free
+        </a>
+      </div>
+      <p class="yt-section-desc">Watch expert guidance on CSC scholarships, university tours, visa process &amp; life in China — all free, from a real doctor living in China.</p>
     </div>
-    <h3 class="yt-title">Learn How to Study in China 🇨🇳</h3>
-    <p class="yt-subtitle">Dr. Zeshan Gondal shares expert tips on CSC scholarships, university selection, visa process, and student life in China — completely free.</p>
-    <a href="https://www.youtube.com/@ZeshanGondal" target="_blank" rel="noopener noreferrer" class="btn-subscribe">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
-      Subscribe — It’s Free
-    </a>
-    <div class="yt-stats">
-      <div class="yt-stat"><span class="yt-stat-num">100+</span><span class="yt-stat-lbl">Partner Unis</span></div>
-      <div class="yt-stat"><span class="yt-stat-num">Free</span><span class="yt-stat-lbl">Guidance</span></div>
-      <div class="yt-stat"><span class="yt-stat-num">🇨🇳</span><span class="yt-stat-lbl">China Experts</span></div>
+
+    <div class="yt-video-grid">
+
+      <a class="yt-video-card" href="https://www.youtube.com/watch?v=0AGnUMu76Gw" target="_blank" rel="noopener noreferrer">
+        <div class="yt-thumb-wrap">
+          <img src="https://img.youtube.com/vi/0AGnUMu76Gw/hqdefault.jpg" alt="Before You Study in China Watch This!" loading="lazy" class="yt-thumb"/>
+          <div class="yt-play-btn"><svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="yt-duration">20:04</span>
+        </div>
+        <div class="yt-card-body">
+          <p class="yt-card-title">Before You Study in China Watch This! MBBS, Scholarships, HSK &amp; Real Life Explained</p>
+          <span class="yt-card-meta">2.2K views · 3 months ago</span>
+        </div>
+      </a>
+
+      <a class="yt-video-card" href="https://www.youtube.com/watch?v=icdBVmkvvQY" target="_blank" rel="noopener noreferrer">
+        <div class="yt-thumb-wrap">
+          <img src="https://img.youtube.com/vi/icdBVmkvvQY/hqdefault.jpg" alt="Don't Go to China for MBBS Before Watching This!" loading="lazy" class="yt-thumb"/>
+          <div class="yt-play-btn"><svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="yt-duration">25:17</span>
+        </div>
+        <div class="yt-card-body">
+          <p class="yt-card-title">Don't Go to China for MBBS Before Watching This! (2026) MDCAT, Real Cost</p>
+          <span class="yt-card-meta">3.8K views · 4 months ago</span>
+        </div>
+      </a>
+
+      <a class="yt-video-card" href="https://www.youtube.com/watch?v=qTBewACeYlg" target="_blank" rel="noopener noreferrer">
+        <div class="yt-thumb-wrap">
+          <img src="https://img.youtube.com/vi/qTBewACeYlg/hqdefault.jpg" alt="CSC Scholarships China for MS MBBS MASTER PHD" loading="lazy" class="yt-thumb"/>
+          <div class="yt-play-btn"><svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="yt-duration">27:48</span>
+        </div>
+        <div class="yt-card-body">
+          <p class="yt-card-title">CSC Scholarships China for MS, MBBS, MASTER &amp; PhD — Step by Step Guide 2026/27</p>
+          <span class="yt-card-meta">4.8K views · 5 months ago</span>
+        </div>
+      </a>
+
+      <a class="yt-video-card" href="https://www.youtube.com/watch?v=B6x0_sL2kuQ" target="_blank" rel="noopener noreferrer">
+        <div class="yt-thumb-wrap">
+          <img src="https://img.youtube.com/vi/B6x0_sL2kuQ/hqdefault.jpg" alt="Inside the Harbin Medical University Full Tour" loading="lazy" class="yt-thumb"/>
+          <div class="yt-play-btn"><svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="yt-duration">18:32</span>
+        </div>
+        <div class="yt-card-body">
+          <p class="yt-card-title">Inside the Harbin Medical University — Full Tour &amp; Student Interviews</p>
+          <span class="yt-card-meta">Student life · Campus tour</span>
+        </div>
+      </a>
+
+      <a class="yt-video-card" href="https://www.youtube.com/watch?v=J-lK4V38bog" target="_blank" rel="noopener noreferrer">
+        <div class="yt-thumb-wrap">
+          <img src="https://img.youtube.com/vi/J-lK4V38bog/hqdefault.jpg" alt="MDCAT 2026 Save Your Year MBBS in China Golden Opportunity" loading="lazy" class="yt-thumb"/>
+          <div class="yt-play-btn"><svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="yt-duration">5:36</span>
+        </div>
+        <div class="yt-card-body">
+          <p class="yt-card-title">MDCAT 2026: Save Your Year! MBBS in China — Golden Opportunity</p>
+          <span class="yt-card-meta">1.6K views · 3 months ago</span>
+        </div>
+      </a>
+
+      <a class="yt-video-card" href="https://www.youtube.com/watch?v=Q00LUm-0fcE" target="_blank" rel="noopener noreferrer">
+        <div class="yt-thumb-wrap">
+          <img src="https://img.youtube.com/vi/Q00LUm-0fcE/hqdefault.jpg" alt="I visited a Chinese Medical School GuiZhou Medical University" loading="lazy" class="yt-thumb"/>
+          <div class="yt-play-btn"><svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="yt-duration">Long</span>
+        </div>
+        <div class="yt-card-body">
+          <p class="yt-card-title">I Visited a Chinese Medical School — GuiZhou Medical University Tour</p>
+          <span class="yt-card-meta">University visit · Campus life</span>
+        </div>
+      </a>
+
     </div>
-    <p class="yt-handle">youtube.com/@ZeshanGondal</p>
+
+    <div class="yt-section-footer">
+      <a href="https://www.youtube.com/@ZeshanGondal" target="_blank" rel="noopener noreferrer" class="yt-view-all">
+        View All Videos on YouTube
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
   </div>
 
 <script>
