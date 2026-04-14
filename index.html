@@ -1510,6 +1510,94 @@
       background: #040d1e !important;
     }
 
+    /* ── NAMING CONVENTION CHEAT SHEET ── */
+    .naming-cheatsheet {
+      background: linear-gradient(135deg, #0f1e3a 0%, #0a1628 100%);
+      border: 1px solid rgba(200,146,42,0.25);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    }
+    .naming-cs-header {
+      display: flex; align-items: flex-start; gap: 0.9rem;
+      padding: 1.1rem 1.4rem 1rem;
+      border-bottom: 1px solid rgba(200,146,42,0.15);
+      background: rgba(200,146,42,0.07);
+    }
+    .naming-cs-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(200,146,42,0.18);
+      color: #c8922a; flex-shrink: 0; margin-top: 2px;
+    }
+    .naming-cs-title {
+      display: block;
+      font-size: 1rem; font-weight: 700;
+      color: #e8c97a; margin-bottom: 0.2rem;
+    }
+    .naming-cs-sub {
+      font-size: 0.82rem; color: rgba(255,255,255,0.5);
+      margin: 0; line-height: 1.5;
+    }
+    .naming-cs-sub code {
+      background: rgba(255,255,255,0.1);
+      padding: 1px 5px; border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem; color: #e8c97a;
+    }
+    .naming-cs-grid { padding: 0.4rem 0; }
+    .naming-cs-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.55rem 1.4rem;
+      flex-wrap: wrap;
+    }
+    .naming-cs-alt { background: rgba(255,255,255,0.03); }
+    .naming-cs-doc {
+      font-size: 0.88rem; color: rgba(255,255,255,0.72);
+      display: flex; align-items: center; gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .naming-cs-file {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem; font-weight: 600;
+      color: #c8922a;
+      background: rgba(200,146,42,0.1);
+      border: 1px solid rgba(200,146,42,0.2);
+      padding: 3px 10px; border-radius: 6px;
+      white-space: nowrap;
+    }
+    .naming-cs-file svg { opacity: 0.6; flex-shrink: 0; }
+    .naming-cs-badge {
+      font-size: 0.68rem; font-weight: 700;
+      background: rgba(26,61,122,0.5);
+      color: rgba(255,255,255,0.55);
+      padding: 2px 7px; border-radius: 20px;
+      letter-spacing: 0.03em; white-space: nowrap;
+    }
+    .naming-cs-badge-opt {
+      background: rgba(200,146,42,0.15);
+      color: rgba(200,146,42,0.7);
+    }
+    .naming-cs-footer {
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+      padding: 0.75rem 1.4rem;
+      border-top: 1px solid rgba(200,146,42,0.12);
+      background: rgba(200,146,42,0.05);
+      font-size: 0.82rem; color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+    }
+    .naming-cs-footer strong { color: #e8c97a; }
+    .naming-cs-footer em { color: rgba(255,255,255,0.6); font-style: normal; }
+    .naming-cs-footer svg { flex-shrink: 0; color: #c8922a; }
+    @media (max-width: 640px) {
+      .naming-cs-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+    }
+
+
     /* Defensive: ensure script/style tags never render as visible text */
     script, style { display: none !important; }
 
@@ -2696,6 +2784,87 @@
       <div class="section-badge">14 docs</div>
     </div>
     <div class="section-body">
+
+      <!-- ── NAMING CONVENTION CHEAT SHEET ── -->
+      <div class="naming-cheatsheet">
+        <div class="naming-cs-header">
+          <div class="naming-cs-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div>
+            <strong class="naming-cs-title">PDF Naming Convention — Required</strong>
+            <p class="naming-cs-sub">Replace <code>YourName</code> with your actual surname. One document per file. Save as PDF only.</p>
+          </div>
+        </div>
+        <div class="naming-cs-grid">
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">Passport (Home Page)</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Passport_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row naming-cs-alt">
+            <span class="naming-cs-doc">Student Personal Photo</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Photo_AliKhan.jpg</span>
+          </div>
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">Diploma / Degree Certificate</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Diploma_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row naming-cs-alt">
+            <span class="naming-cs-doc">Academic Transcripts (Matric)</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>TranscriptMatric_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">Academic Transcripts (FSc / O-A Level)</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>TranscriptFSc_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row naming-cs-alt">
+            <span class="naming-cs-doc">Language Certificate (IELTS / HSK)</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>LanguageCert_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">Physical Examination Form</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>MedicalExam_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row naming-cs-alt">
+            <span class="naming-cs-doc">Non-Criminal Record (Police Certificate)</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>PoliceCert_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">Bank Statement / Certificate of Deposit</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>BankStatement_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row naming-cs-alt">
+            <span class="naming-cs-doc">Application Fee Payment Receipt</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>FeeReceipt_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">CV / Resume <span class="naming-cs-badge">Master / PhD only</span></span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>CV_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row naming-cs-alt">
+            <span class="naming-cs-doc">Recommendation Letters</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>RecommendationLetter_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">Study Plan / Research Proposal</span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>StudyPlan_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row naming-cs-alt">
+            <span class="naming-cs-doc">Guardianship Certificate <span class="naming-cs-badge naming-cs-badge-opt">Under 18 only</span></span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Guardianship_AliKhan.pdf</span>
+          </div>
+          <div class="naming-cs-row">
+            <span class="naming-cs-doc">Existing China Visa Page <span class="naming-cs-badge naming-cs-badge-opt">If applicable</span></span>
+            <span class="naming-cs-file"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>ChinaVisa_AliKhan.pdf</span>
+          </div>
+        </div>
+        <div class="naming-cs-footer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Send all files to <strong>admissions@firstlinersabroad.cn</strong> · Subject line: <em>Application Docs — [Your Full Name]</em> · All files must be PDF (photo may be JPG/PNG)
+        </div>
+      </div>
+      <!-- ── END NAMING CHEAT SHEET ── -->
+
       <div class="doc-grid" id="docGrid">
 
         <div class="doc-item" onclick="toggleDoc(this)">
