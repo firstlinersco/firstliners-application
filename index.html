@@ -3606,12 +3606,14 @@
     // ── Footer ──
     function addFooter() {
       const pg = doc.getNumberOfPages();
-      fill(...NAVY2); doc.rect(0, PH - 11, PW, 11, 'F');
-      fill(...GOLD);  doc.rect(0, PH - 11, PW, 1.2, 'F');
-      set(...WHITE); doc.setFont('helvetica','normal'); doc.setFontSize(9);
-      doc.text('FirstLiners Abroad Education  ·  Dr. Zeshan Gondal  ·  WA: +92 343 6058898  ·  admissions@firstlinersabroad.cn', ML, PH - 4);
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(9);
-      doc.text('Page ' + pg + ' of ' + '—', PW - MR, PH - 4, { align: 'right' });
+      // Thin gold rule
+      fill(...GOLD); doc.rect(ML, PH - 14, CW, 0.5, 'F');
+      // Company info — muted, left-aligned
+      set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+      doc.text('FirstLiners Abroad Education  ·  Dr. Zeshan Gondal  ·  WA: +92 343 6058898  ·  admissions@firstlinersabroad.cn', ML, PH - 8);
+      // Page number — right, gold
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      doc.text('Page ' + pg, PW - MR, PH - 8, { align: 'right' });
     }
 
     // ── Page overflow guard ──
@@ -3628,35 +3630,31 @@
     // ── Subtle page background ──
     function addPageBg() {
       fill(252, 253, 255); doc.rect(0, 0, PW, PH, 'F');
-      fill(...NAVY); doc.rect(0, 0, 3.5, PH, 'F');
-      fill(...GOLD); doc.rect(3.5, 0, 1.2, PH, 'F');
     }
 
-    // ── Section header (full-width navy bar) ──
+    // ── Section header — clean border-bottom style ──
     function secHead(num, title) {
-      checkY(22);
-      const H = 17;
-      fill(...NAVY2); doc.rect(ML, y, CW, H, 'F');
-      fill(...GOLD);  doc.rect(ML, y, 5, H, 'F');
-      // Number badge
-      fill(...GOLD); doc.roundedRect(ML + 8, y + 2.5, 11, 11, 2, 2, 'F');
-      set(...NAVY2); doc.setFont('helvetica','bold'); doc.setFontSize(10);
-      doc.text(num, ML + 13.5, y + 9.5, { align:'center' });
-      // Title
-      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(15);
-      doc.text(title, ML + 24, y + 11.5);
-      y += H + 7;
+      checkY(20);
+      // Gold number
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(11);
+      doc.text(num, ML, y + 10);
+      // Section title — navy, uppercase
+      set(...NAVY2); doc.setFont('helvetica','bold'); doc.setFontSize(14);
+      doc.text(title, ML + 11, y + 10);
+      // Gold underline accent
+      fill(...GOLD); doc.rect(ML, y + 14, 40, 1.2, 'F');
+      // Light full-width rule
+      fill(...RULE); doc.rect(ML + 40, y + 14.3, CW - 40, 0.4, 'F');
+      y += 22;
     }
 
-    // ── Sub-header (golden accent bar) ──
+    // ── Sub-header — minimal left accent ──
     function subHead(title) {
-      checkY(15);
-      fill(...LTBLUE); doc.rect(ML, y, CW, 11, 'F');
-      draw(...MID); doc.rect(ML, y, CW, 11, 'S');
-      fill(...GOLD); doc.rect(ML, y, 4, 11, 'F');
-      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(12);
-      doc.text(title, ML + 9, y + 8);
-      y += 15;
+      checkY(13);
+      fill(...GOLD); doc.rect(ML, y + 1, 2, 8, 'F');
+      set(...NAVY2); doc.setFont('helvetica','bold'); doc.setFontSize(11);
+      doc.text(title, ML + 6, y + 7.5);
+      y += 13;
     }
 
     // ── Standard row — label left, value right ──
@@ -3670,21 +3668,17 @@
       checkY(rH);
       // Background
       fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
-      draw(...MID); doc.setLineWidth(0.18); doc.rect(ML, y, CW, rH, 'S');
-      // Left status dot
-      fill(val ? NAVY[0] : FAINT[0], val ? NAVY[1] : FAINT[1], val ? NAVY[2] : FAINT[2]);
-      doc.circle(ML + 3.5, y + rH/2, 1.6, 'F');
+      // Bottom border only
+      draw(...MID); doc.setLineWidth(0.18); doc.line(ML, y + rH, ML + CW, y + rH);
       // Label
       set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(10);
       const lblLines = doc.splitTextToSize(label, LW - 10);
-      doc.text(lblLines, ML + 7.5, y + rH/2, { baseline:'middle' });
-      // Divider
-      fill(MID[0], MID[1], MID[2]); doc.rect(ML + LW, y, 0.4, rH, 'F');
+      doc.text(lblLines, ML + 4, y + rH/2, { baseline:'middle' });
       // Value
       set(val ? DARK[0] : FAINT[0], val ? DARK[1] : FAINT[1], val ? DARK[2] : FAINT[2]);
       doc.setFont('helvetica', val ? 'normal' : 'italic');
       doc.setFontSize(13);
-      doc.text(wrappedLines, ML + LW + 5, y + rH/2, { baseline:'middle' });
+      doc.text(wrappedLines, ML + LW + 4, y + rH/2, { baseline:'middle' });
       y += rH;
     }
 
@@ -3696,14 +3690,13 @@
       checkY(rH);
       [[lbl1,v1,0],[lbl2,v2,HW]].forEach(([lbl,val,ox]) => {
         fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML+ox, y, HW, rH, 'F');
-        draw(...MID); doc.setLineWidth(0.18); doc.rect(ML+ox, y, HW, rH, 'S');
-        fill(val ? NAVY[0]:FAINT[0], val ? NAVY[1]:FAINT[1], val ? NAVY[2]:FAINT[2]);
-        doc.circle(ML+ox+3.5, y+rH/2, 1.5, 'F');
+        // Bottom border only
+        draw(...MID); doc.setLineWidth(0.18); doc.line(ML+ox, y+rH, ML+ox+HW, y+rH);
         set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(9.5);
-        doc.text(lbl, ML+ox+7.5, y+6.5);
+        doc.text(lbl, ML+ox+4, y+6.5);
         set(val?DARK[0]:FAINT[0], val?DARK[1]:FAINT[1], val?DARK[2]:FAINT[2]);
         doc.setFont('helvetica', val?'normal':'italic'); doc.setFontSize(12);
-        doc.text(val||'—', ML+ox+7.5, y+14);
+        doc.text(val||'\u2014', ML+ox+4, y+14);
       });
       y += rH;
     }
@@ -3717,20 +3710,19 @@
         const vt = (val||'').trim();
         const ox = ML + i * TW;
         fill(...(shade ? LTGRAY : WHITE)); doc.rect(ox, y, TW, rH, 'F');
-        draw(...MID); doc.setLineWidth(0.18); doc.rect(ox, y, TW, rH, 'S');
-        fill(vt?NAVY[0]:FAINT[0], vt?NAVY[1]:FAINT[1], vt?NAVY[2]:FAINT[2]);
-        doc.circle(ox+3.5, y+rH/2, 1.5, 'F');
+        // Bottom border only
+        draw(...MID); doc.setLineWidth(0.18); doc.line(ox, y+rH, ox+TW, y+rH);
         set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(9.5);
-        doc.text(lbl, ox+7.5, y+6.5);
+        doc.text(lbl, ox+4, y+6.5);
         set(vt?DARK[0]:FAINT[0], vt?DARK[1]:FAINT[1], vt?DARK[2]:FAINT[2]);
         doc.setFont('helvetica', vt?'normal':'italic'); doc.setFontSize(12);
-        doc.text(vt||'—', ox+7.5, y+14);
+        doc.text(vt||'\u2014', ox+4, y+14);
       });
       y += rH;
     }
 
     // ── Gap between sections ──
-    function gap(mm) { y += mm * 1.8; }
+    function gap(mm) { y += mm; }
 
     // ── Photo placeholder ──
     function _drawPhotoPlaceholder(px, py, pw, ph) {
@@ -3819,79 +3811,62 @@
     // ── FULL WHITE PAGE ──
     fill(...WHITE); doc.rect(0, 0, PW, PH, 'F');
 
-    // ── THICK NAVY TOP BAR ──
-    fill(...NAVY2); doc.rect(0, 0, PW, 38, 'F');
-    // Gold bottom edge of bar
-    fill(...GOLD); doc.rect(0, 37, PW, 1.5, 'F');
+    // ── NAVY TOP BAR ──
+    fill(...NAVY2); doc.rect(0, 0, PW, 32, 'F');
+    fill(...GOLD); doc.rect(0, 31, PW, 1.2, 'F');
 
-    // Company name — left, white
-    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(12.5);
-    doc.text('FIRSTLINERS ABROAD EDUCATION', ML, 16);
-    // Sub-line — muted
-    set(185,200,222); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
-    doc.text('admissions@firstlinersabroad.cn   ·   WA: +92 343 6058898   ·   100+ Partner Universities in China', ML, 25);
-    // Date — right aligned, same row
-    doc.text(genDate, PW - ML, 25, { align: 'right' });
+    // Company name
+    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(11);
+    doc.text('FIRSTLINERS ABROAD EDUCATION', ML, 13);
+    set(185,200,222); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    doc.text('admissions@firstlinersabroad.cn  \u00B7  WA: +92 343 6058898  \u00B7  100+ Partner Universities', ML, 22);
+    doc.text(genDate, PW - MR, 22, { align: 'right' });
 
-    // ── DOCUMENT TYPE LABEL ──
-    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-    doc.text('OFFICIAL APPLICATION DOCUMENT', ML, 52);
-
-    // ── MAIN TITLE — single line, large, left-aligned ──
-    set(...INK); doc.setFont('helvetica','bold'); doc.setFontSize(27);
-    doc.text('Student Application Dossier', ML, 67);
-
-    // Gold accent bar under title
-    fill(...GOLD); doc.rect(ML, 71, 72, 2, 'F');
-
-    // Tagline
-    set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
-    doc.text('Prepared by FirstLiners Abroad Education for university admission processing.', ML, 82);
-
-    // ── HAIRLINE RULE ──
-    fill(...RULE); doc.rect(ML, 89, CW, 0.4, 'F');
+    // ── TITLE BLOCK ──
+    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7);
+    doc.text('OFFICIAL APPLICATION DOCUMENT', ML, 43);
+    set(...INK); doc.setFont('helvetica','bold'); doc.setFontSize(24);
+    doc.text('Student Application Dossier', ML, 56);
+    fill(...GOLD); doc.rect(ML, 59, 60, 1.5, 'F');
+    set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+    doc.text('Prepared by FirstLiners Abroad Education for university admission processing.', ML, 68);
+    fill(...RULE); doc.rect(ML, 73, CW, 0.3, 'F');
 
     // ── STUDENT BLOCK ──
-    const BLK_Y = 96;
-    const PHOTO_W = 34, PHOTO_H = 46;
+    const BLK_Y = 78;
+    const PHOTO_W = 30, PHOTO_H = 40;
     const PHOTO_X = ML + CW - PHOTO_W;
-    const INFO_W  = PHOTO_X - ML - 8;
+    const INFO_W  = PHOTO_X - ML - 6;
 
-    // Student name — large, navy
-    set(...INK); doc.setFont('helvetica','bold'); doc.setFontSize(21);
+    // Student name
+    set(...INK); doc.setFont('helvetica','bold'); doc.setFontSize(18);
     const nameLines = doc.splitTextToSize(fullName.toUpperCase(), INFO_W);
-    doc.text(nameLines, ML, BLK_Y + 9);
-    const nameH = nameLines.length * 10.5;
+    doc.text(nameLines, ML, BLK_Y + 8);
+    const nameH = nameLines.length * 9;
+    fill(...GOLD); doc.rect(ML, BLK_Y + nameH + 2, INFO_W * 0.4, 0.6, 'F');
 
-    // Gold rule under name
-    fill(...GOLD); doc.rect(ML, BLK_Y + nameH + 3, INFO_W, 0.8, 'F');
-
-    // Info grid — 2 columns
+    // Info grid — 2 columns, tight
     const iFields = [
       ['Nationality',   nation],
       ['Date of Birth', dob],
       ['Passport No.',  passNum],
       ['Degree Level',  degree],
-      ['Program',       program.length > 24 ? program.substring(0,22)+'…' : program],
+      ['Program',       program.length > 28 ? program.substring(0,26)+'\u2026' : program],
       ['Blood Group',   bgroup],
     ];
     const colW = INFO_W / 2;
-    const gridY = BLK_Y + nameH + 10;
+    const gridY = BLK_Y + nameH + 6;
     iFields.forEach(([lbl, val], i) => {
-      const col = i % 2;
-      const row = Math.floor(i / 2);
-      const ix  = ML + col * colW;
-      const iy  = gridY + row * 19;
-      set(...MIST); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      const col = i % 2, rw = Math.floor(i / 2);
+      const ix = ML + col * colW, iy = gridY + rw * 13;
+      set(...MIST); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
       doc.text(lbl.toUpperCase(), ix, iy);
-      set(...INK); doc.setFont('helvetica','normal'); doc.setFontSize(11);
-      doc.text(val || '—', ix, iy + 8);
+      set(...INK); doc.setFont('helvetica','normal'); doc.setFontSize(10);
+      doc.text(val || '\u2014', ix, iy + 7);
     });
-
-    // CNIC + email — small, muted
-    const cnicY = gridY + 3 * 19 + 5;
-    set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
-    doc.text('CNIC: ' + nicNo + '     ·     ' + (stdEmail.length > 32 ? stdEmail.substring(0,30)+'…' : stdEmail), ML, cnicY);
+    const cnicY = gridY + 3 * 13 + 2;
+    set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    doc.text('CNIC: ' + nicNo + '   \u00B7   ' + (stdEmail.length > 35 ? stdEmail.substring(0,33)+'\u2026' : stdEmail), ML, cnicY);
 
     // ── PASSPORT PHOTO ──
     const PHOTO_Y_POS = BLK_Y;
@@ -3900,86 +3875,54 @@
       try {
         const fmt = photoSrc.startsWith('data:image/png') ? 'PNG' : 'JPEG';
         doc.addImage(photoSrc, fmt, PHOTO_X, PHOTO_Y_POS, PHOTO_W, PHOTO_H);
-        draw(...INK); doc.setLineWidth(0.5);
+        draw(...INK); doc.setLineWidth(0.4);
         doc.rect(PHOTO_X, PHOTO_Y_POS, PHOTO_W, PHOTO_H, 'S');
         doc.setLineWidth(0.2);
       } catch(e) { _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y_POS, PHOTO_W, PHOTO_H); }
     } else { _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y_POS, PHOTO_W, PHOTO_H); }
-    // Slim gold frame on photo
-    draw(...GOLD); doc.setLineWidth(0.8);
-    doc.rect(PHOTO_X - 1.5, PHOTO_Y_POS - 1.5, PHOTO_W + 3, PHOTO_H + 3, 'S');
+    draw(...GOLD); doc.setLineWidth(0.6);
+    doc.rect(PHOTO_X - 1, PHOTO_Y_POS - 1, PHOTO_W + 2, PHOTO_H + 2, 'S');
     doc.setLineWidth(0.2);
-    set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
-    doc.text('PHOTO', PHOTO_X + PHOTO_W / 2, PHOTO_Y_POS + PHOTO_H + 5, { align: 'center' });
+    set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(6.5);
+    doc.text('PHOTO', PHOTO_X + PHOTO_W / 2, PHOTO_Y_POS + PHOTO_H + 4, { align: 'center' });
 
-    // ── HAIRLINE RULE ──
-    const ruleY2 = Math.max(PHOTO_Y_POS + PHOTO_H + 12, cnicY + 8);
-    fill(...RULE); doc.rect(ML, ruleY2, CW, 0.4, 'F');
+    // ── DIVIDER ──
+    const divY = Math.max(PHOTO_Y_POS + PHOTO_H + 8, cnicY + 6);
+    fill(...RULE); doc.rect(ML, divY, CW, 0.3, 'F');
 
-    // ── KEY DETAILS STRIP — 3 clean columns, no background ──
-    const stripY = ruleY2 + 10;
-    const stripItems = [
-      ['Degree',      degree],
-      ['Program',     program.length > 22 ? program.substring(0,20)+'…' : program],
-      ['Nationality', nation],
-    ];
-    const stripW = CW / 3;
-    stripItems.forEach(([lbl, val], i) => {
-      if (i > 0) {
-        fill(...RULE); doc.rect(ML + i * stripW, stripY, 0.4, 14, 'F');
-      }
-      const sx = ML + i * stripW + 6;
-      set(...MIST); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-      doc.text(lbl.toUpperCase(), sx, stripY + 5);
-      set(...INK); doc.setFont('helvetica','bold'); doc.setFontSize(11);
-      doc.text(val || '—', sx, stripY + 13);
-    });
-
-    // ── HAIRLINE RULE ──
-    fill(...RULE); doc.rect(ML, stripY + 19, CW, 0.4, 'F');
-
-    // ── CONTENTS HEADING ──
-    const contentsY = stripY + 28;
-    set(...MIST); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+    // ── CONTENTS ──
+    const contentsY = divY + 6;
+    set(...MIST); doc.setFont('helvetica','bold'); doc.setFontSize(7);
     doc.text('CONTENTS', ML, contentsY);
-    fill(...GOLD); doc.rect(ML, contentsY + 2, 20, 0.7, 'F');
+    fill(...GOLD); doc.rect(ML, contentsY + 1.5, 18, 0.6, 'F');
 
-    // TOC rows — minimal, no colour blocks
     const toc = [
-      ['01','Personal Information',                    'Passport, NIC, blood group, personal details'],
-      ['02','Home Address',                            'Permanent home address and contact'],
-      ['03','Current Address & Student Email',         'Current location and personal email'],
-      ['04','Financial Sponsor, Guarantor & Emergency','Sponsorship, China guarantor, emergency contact'],
-      ['05','Study Plan & Academic Preferences',       'Intended program, degree level, referee'],
-      ['06','Education History',                       'Matric, FSc/12th, Bachelor, Master + subject marks'],
-      ['07','Work Experience',                         'Employment history and responsibilities'],
-      ['08','Family Information',                      'Father, mother, siblings'],
-      ['09','Required Documents Checklist',            'All documents with completion status'],
-      ['10','Other Information & Declaration',         'Awards, video, declaration and signature'],
+      ['01','Personal Information'],
+      ['02','Home Address'],
+      ['03','Current Address & Student Email'],
+      ['04','Sponsor, Guarantor & Emergency'],
+      ['05','Study Plan & Academic Preferences'],
+      ['06','Education History'],
+      ['07','Work Experience'],
+      ['08','Family Information'],
+      ['09','Required Documents Checklist'],
+      ['10','Other Information & Declaration'],
     ];
 
-    let ty = contentsY + 8;
-    toc.forEach(([num, title, desc], i) => {
-      const rH = 11.5;
-      // Alternating very-light background
-      if (i % 2 === 0) { fill(248,249,252); doc.rect(ML, ty, CW, rH, 'F'); }
-      // Gold number
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(8);
-      doc.text(num, ML + 3.5, ty + 8);
-      // Hairline separator
-      fill(...RULE); doc.rect(ML + 11, ty + 2, 0.3, rH - 4, 'F');
-      // Title
-      set(...INK); doc.setFont('helvetica','bold'); doc.setFontSize(9.5);
-      doc.text(title, ML + 15, ty + 6);
-      // Description
-      set(...MIST); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
-      doc.text(desc, ML + 15, ty + 10.5);
-      // Bottom hairline
-      fill(...RULE); doc.rect(ML, ty + rH, CW, 0.25, 'F');
-      ty += rH;
+    let ty = contentsY + 6;
+    const tocRH = 8.5;
+    toc.forEach(([num, ttl], i) => {
+      if (i % 2 === 0) { fill(248,249,252); doc.rect(ML, ty, CW, tocRH, 'F'); }
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      doc.text(num, ML + 3, ty + 6);
+      fill(...RULE); doc.rect(ML + 10, ty + 1.5, 0.25, tocRH - 3, 'F');
+      set(...INK); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+      doc.text(ttl, ML + 14, ty + 6);
+      fill(...RULE); doc.rect(ML, ty + tocRH, CW, 0.2, 'F');
+      ty += tocRH;
     });
 
-    y = ty + 8;
+    y = ty + 4;
     addFooter();
 
     // ════════════════════════════════════════════════
@@ -4044,7 +3987,7 @@
     gap(6);
 
     // ── SECTION 04: FINANCIAL SPONSOR ──
-    secHead('04', 'FINANCIAL SPONSOR, GUARANTOR & EMERGENCY CONTACT');
+    secHead('04', 'SPONSOR, GUARANTOR & EMERGENCY');
     sh = true;
     row('Has Financial Sponsor?', rv('q29'), sh=!sh);
     gap(2);
@@ -4308,10 +4251,10 @@
     const totalPages = doc.getNumberOfPages();
     for (let pg=1; pg<=totalPages; pg++) {
       doc.setPage(pg);
-      // Overwrite old "Page X of —" with correct total
-      fill(...NAVY2); doc.rect(PW-42, PH-11, 42, 11, 'F');
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(9);
-      doc.text('Page '+pg+' of '+totalPages, PW-MR, PH-4, {align:'right'});
+      // Overwrite "Page X" with "Page X of Y"
+      fill(252, 253, 255); doc.rect(PW - 42, PH - 12, 42, 6, 'F');
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      doc.text('Page '+pg+' of '+totalPages, PW-MR, PH-8, {align:'right'});
     }
 
     // ── Save ──
