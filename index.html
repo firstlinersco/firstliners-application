@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -18,7 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <style>
     /* ── DESIGN TOKENS ── */
-    :root, [data-theme="light"] {
+    :root {
       --text-xs: clamp(0.875rem, 0.85rem + 0.25vw, 1rem);
       --text-sm: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);
       --text-base: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
@@ -81,43 +81,6 @@
       --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
     }
 
-    [data-theme="dark"] {
-      --color-bg: #0a1628;
-      --color-surface: #0f2040;
-      --color-surface-2: #152847;
-      --color-surface-offset: #1a3254;
-      --color-border: #2a4a72;
-      --color-divider: #1e3a5e;
-      --color-text: #e2eaf5;
-      --color-text-muted: #94aabf;
-      --color-text-faint: #4a6080;
-      --color-text-inverse: #0a1628;
-
-      --color-primary: #60a5fa;
-      --color-primary-hover: #93c5fd;
-      --color-primary-active: #bfdbfe;
-      --color-primary-light: #1e3a5e;
-      --color-primary-mid: #2a4f7a;
-
-      --color-accent: #fbbf24;
-      --color-accent-light: #292015;
-
-      --color-success: #4ade80;
-      --color-success-light: #0f2e1c;
-      --color-success-mid: #166534;
-
-      --color-error: #f87171;
-      --color-error-light: #2d1515;
-
-      --color-warning: #fbbf24;
-      --color-warning-light: #251d0a;
-      --color-warning-border: #92400e;
-
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-      --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
-    }
-
     /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; scroll-padding-top: var(--space-16); }
@@ -143,7 +106,6 @@
       position: relative;
       overflow: hidden;
     }
-    [data-theme="dark"] .site-header { color: var(--color-text-inverse); }
     .site-header::before {
       content: '';
       position: absolute; inset: 0;
@@ -164,7 +126,7 @@
     .header-title { font-family: var(--font-display); font-size: var(--text-xl); color: #fff; font-style: italic; line-height: 1.15; }
     .header-subtitle { font-size: var(--text-sm); opacity: 0.8; margin-top: var(--space-1); }
     .header-actions { display: flex; gap: var(--space-2); align-items: center; }
-    .theme-toggle, .print-btn {
+    .print-btn {
       width: 38px; height: 38px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.15);
@@ -173,7 +135,7 @@
       color: #fff;
       transition: background var(--transition);
     }
-    .theme-toggle:hover, .print-btn:hover { background: rgba(255,255,255,0.25); }
+    .print-btn:hover { background: rgba(255,255,255,0.25); }
 
     /* ── ALERT BANNER ── */
     .alert {
@@ -244,7 +206,6 @@
       padding: var(--space-5) var(--space-6);
       display: flex; align-items: center; gap: var(--space-4);
     }
-    [data-theme="dark"] .section-header { background: linear-gradient(135deg, var(--color-surface-offset) 0%, var(--color-surface-2) 100%); }
     .section-num {
       width: 40px; height: 40px;
       border-radius: var(--radius-md);
@@ -254,7 +215,6 @@
       font-weight: 800; font-size: var(--text-base);
       color: #fff; flex-shrink: 0;
     }
-    [data-theme="dark"] .section-num { color: var(--color-primary); background: var(--color-primary-light); border-color: var(--color-primary-mid); }
     .section-header-text { flex: 1; }
     .section-title {
       color: #fff;
@@ -262,9 +222,7 @@
       font-weight: 700;
       line-height: 1.2;
     }
-    [data-theme="dark"] .section-title { color: var(--color-text); }
     .section-subtitle { font-size: var(--text-xs); color: rgba(255,255,255,0.75); margin-top: 0.15rem; }
-    [data-theme="dark"] .section-subtitle { color: var(--color-text-muted); }
     .section-badge {
       padding: 0.2rem 0.7rem;
       border-radius: var(--radius-full);
@@ -274,7 +232,6 @@
       font-weight: 700;
       border: 1px solid rgba(255,255,255,0.3);
     }
-    [data-theme="dark"] .section-badge { background: var(--color-primary-light); color: var(--color-primary); border-color: var(--color-primary-mid); }
 
     .section-body { padding: var(--space-6); }
 
@@ -311,7 +268,6 @@
       margin-top: var(--space-2);
       display: flex; gap: var(--space-2); align-items: flex-start;
     }
-    [data-theme="dark"] .q-warn { color: var(--color-warning); }
 
     /* ── FORM CONTROLS ── */
     .form-input, .form-select, .form-textarea {
@@ -362,7 +318,6 @@
       }
       label:hover { border-color: var(--color-primary); background: var(--color-primary-light); }
     }
-    [data-theme="dark"] .radio-option input:checked + label { color: var(--color-primary); }
 
     /* Date inputs side-by-side */
     .date-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-2); }
@@ -444,13 +399,10 @@
       color: #fff;
       box-shadow: var(--shadow-lg);
     }
-    [data-theme="dark"] .submit-card { background: linear-gradient(135deg, var(--color-surface-offset) 0%, var(--color-surface-2) 100%); }
     .submit-title { font-family: var(--font-display); font-size: var(--text-xl); font-style: italic; margin-bottom: var(--space-3); }
-    [data-theme="dark"] .submit-title { color: var(--color-text); }
     .checklist-final { list-style: none; margin-bottom: var(--space-6); }
     .checklist-final li { display: flex; align-items: flex-start; gap: var(--space-3); font-size: var(--text-sm); padding: var(--space-2) 0; opacity: 0.95; }
     .checklist-final li::before { content: '✓'; font-weight: 800; flex-shrink: 0; }
-    [data-theme="dark"] .checklist-final li { color: var(--color-text); }
     .btn-submit {
       display: inline-flex; align-items: center; gap: var(--space-3);
       background: #fff;
@@ -461,7 +413,6 @@
       box-shadow: var(--shadow-md);
       transition: all var(--transition);
     }
-    [data-theme="dark"] .btn-submit { background: var(--color-primary); color: #fff; }
     .btn-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
     .btn-print {
       display: inline-flex; align-items: center; gap: var(--space-3);
@@ -495,7 +446,6 @@
       .submit-card { padding: var(--space-6) var(--space-5); }
       .btn-submit, .btn-print { display: block; text-align: center; justify-content: center; width: 100%; margin: var(--space-2) 0 0 0; }
     }
-
 
     /* ── EDUCATION LEVEL CARDS ── */
     .edu-level-card {
@@ -537,7 +487,7 @@
     .edu-level-body.open { display: block; }
 
     @media print {
-      .theme-toggle, .print-btn, .btn-submit, .btn-print, .progress-card { display: none; }
+      .print-btn, .btn-submit, .btn-print, .progress-card { display: none; }
       .section-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
       body { background: #fff; color: #000; }
     }
@@ -1189,7 +1139,7 @@
       gap: 8px;
       flex-shrink: 0;
     }
-    .theme-toggle, .print-btn {
+    .print-btn {
       width: 38px !important; height: 38px !important;
       border-radius: 10px !important;
       background: rgba(255,255,255,0.08) !important;
@@ -1199,7 +1149,7 @@
       cursor: pointer; transition: all 0.2s;
       backdrop-filter: blur(8px);
     }
-    .theme-toggle:hover, .print-btn:hover {
+    .print-btn:hover {
       background: rgba(200,146,42,0.2) !important;
       border-color: rgba(200,146,42,0.4) !important;
       color: #e8b84b !important;
@@ -1490,25 +1440,6 @@
     }
 
     /* ── DARK MODE ADJUSTMENTS ── */
-    [data-theme="dark"] .notice-info {
-      background: rgba(26,61,122,0.15) !important;
-    }
-    [data-theme="dark"] .notice-success {
-      background: rgba(20,100,50,0.15) !important;
-    }
-    [data-theme="dark"] .progress-card {
-      background: rgba(255,255,255,0.04) !important;
-    }
-    [data-theme="dark"] .section-card, [data-theme="dark"] .form-card {
-      background: rgba(255,255,255,0.03) !important;
-      border-color: rgba(255,255,255,0.06) !important;
-    }
-    [data-theme="dark"] .notice-title { color: #fff !important; }
-    [data-theme="dark"] .notice-body { color: rgba(255,255,255,0.6) !important; }
-    [data-theme="dark"] .notice-body strong { color: rgba(255,255,255,0.9) !important; }
-    [data-theme="dark"] body {
-      background: #040d1e !important;
-    }
 
     /* ── NAMING CONVENTION CHEAT SHEET ── */
     .naming-cheatsheet {
@@ -1597,7 +1528,6 @@
       .naming-cs-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
     }
 
-
     /* Defensive: ensure script/style tags never render as visible text */
     script, style { display: none !important; }
 
@@ -1626,8 +1556,6 @@
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
     Progress saved
   </div>
-
-
 
 <!-- ── HEADER ── -->
 <div class="page-wrapper">
@@ -1663,7 +1591,6 @@
 
       <!-- Controls -->
       <div class="header-actions-top">
-        <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <button class="print-btn" onclick="downloadPDF()" aria-label="Download PDF" title="Download PDF">
@@ -1802,7 +1729,6 @@
               <div class="field-error" id="q3-err">This field is required.</div>
             </td>
           </tr>
-
 
           <!-- Q3b PASSPORT DETAILS -->
           <tr>
@@ -2124,7 +2050,6 @@
               </div>
             </td>
           </tr>
-
 
           <!-- Q17a Blood Group -->
           <tr>
@@ -3246,8 +3171,6 @@
 
 <script>
 
-
-
   // ── SEND VIA WHATSAPP ──
   function sendViaWhatsApp() {
     const fv = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
@@ -3409,7 +3332,6 @@
 
   // ── DARK MODE ──
   (function () {
-    const t = document.querySelector('[data-theme-toggle]'), r = document.documentElement;
     let d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
     r.setAttribute('data-theme', d);
     t && t.addEventListener('click', () => {
