@@ -6,12 +6,12 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Firstliners" />
-  <meta name="description" content="Firstliners Education Consulting — Student Application Form for Chinese Universities" />
-  <meta property="og:title" content="Firstliners Student Application" />
-  <meta property="og:description" content="Fill your application form for studying in China through Firstliners Education Consulting." />
+  <meta name="apple-mobile-web-app-title" content="FirstLiners Abroad" />
+  <meta name="description" content="FirstLiners Abroad Education — Student Application Form for Chinese Universities" />
+  <meta property="og:title" content="FirstLiners Abroad Education" />
+  <meta property="og:description" content="Fill your application form for studying in China through FirstLiners Abroad Education." />
   <meta property="og:type" content="website" />
-  <title>Firstliners — Student Application Form</title>
+  <title>FirstLiners Abroad Education — Student Application</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -620,15 +620,28 @@
     }
 
     /* ── BUTTONS ── */
-    .btn-primary, .btn-submit {
+    .btn-primary {
       background: linear-gradient(135deg, #0c1e42 0%, #1a3d7a 50%, #2754a0 100%) !important;
       box-shadow: 0 4px 14px rgba(12,30,66,0.35) !important;
       transition: all 0.25s cubic-bezier(0.4,0,0.2,1) !important;
     }
-    .btn-primary:hover, .btn-submit:hover {
+    .btn-primary:hover {
       transform: translateY(-2px) !important;
       box-shadow: 0 8px 24px rgba(12,30,66,0.45), 0 0 0 1px rgba(200,146,42,0.25) !important;
       filter: brightness(1.1) !important;
+    }
+    /* Mark as Complete — bright green so it's always visible */
+    .btn-submit {
+      background: linear-gradient(135deg, #14a44d 0%, #16be5e 60%, #1dd170 100%) !important;
+      color: #fff !important;
+      box-shadow: 0 4px 18px rgba(20,164,77,0.45) !important;
+      border: 2px solid rgba(255,255,255,0.25) !important;
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1) !important;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 28px rgba(20,164,77,0.55) !important;
+      filter: brightness(1.08) !important;
     }
     .btn-print, [onclick*="downloadPDF"] {
       background: linear-gradient(135deg, #7a4a0a, #c8922a, #f59e0b) !important;
@@ -751,46 +764,778 @@
     .site-footer a, .app-footer a { color: rgba(200,146,42,0.85) !important; text-decoration:none; }
     .site-footer a:hover, .app-footer a:hover { color: #f59e0b !important; }
 
+  
+    /* ── AUTO-SAVE TOAST ── */
+    #autosave-toast {
+      position: fixed;
+      bottom: 80px;
+      right: 22px;
+      background: #14a44d;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(20,164,77,0.35);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #autosave-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* ── RESTORE BANNER ── */
+    #restore-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: linear-gradient(135deg, #1a3d7a, #0c2655);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      z-index: 99999;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      font-size: 0.88rem;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    #restore-banner.visible {
+      transform: translateY(0);
+    }
+    #restore-banner .rb-msg {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #restore-banner .rb-icon {
+      width: 36px; height: 36px;
+      background: rgba(200,146,42,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    #restore-banner .rb-actions {
+      display: flex;
+      gap: 8px;
+    }
+    #restore-banner .rb-btn {
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    #restore-banner .rb-btn-yes {
+      background: #c8922a;
+      color: #fff;
+    }
+    #restore-banner .rb-btn-yes:hover { filter: brightness(1.1); }
+    #restore-banner .rb-btn-no {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    #restore-banner .rb-btn-no:hover { background: rgba(255,255,255,0.25); }
+    /* ── AUTOSAVE INDICATOR in header ── */
+    #autosave-indicator {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: auto;
+    }
+    #autosave-indicator .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #14a44d;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100%{opacity:1;transform:scale(1)}
+      50%{opacity:0.4;transform:scale(0.8)}
+    }
+
+  
+    /* ════════════════════════════════════════════════════
+       FIRSTLINERS ABROAD — PREMIUM REDESIGN CSS
+    ════════════════════════════════════════════════════ */
+
+    /* ── CSS VARIABLES UPGRADE ── */
+    :root {
+      --fl-navy-deep:  #040d1e;
+      --fl-navy-mid:   #0a1c3e;
+      --fl-navy-main:  #0f2d6b;
+      --fl-navy-light: #1a3d7a;
+      --fl-gold-deep:  #9a6e10;
+      --fl-gold-main:  #c8922a;
+      --fl-gold-light: #f0b942;
+      --fl-gold-pale:  #fdf5e0;
+      --fl-white:      #ffffff;
+      --fl-off-white:  #f7f9fc;
+      --fl-text-dark:  #0d1829;
+      --fl-text-muted: #5a6880;
+      --fl-border:     #e0e8f4;
+    }
+
+    /* ── GLOBAL PAGE ── */
+    body {
+      background: #f0f4fa !important;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(26,61,122,0.06) 0%, transparent 60%) !important;
+    }
+    .page-wrapper {
+      max-width: 900px !important;
+    }
+
+    /* ── HEADER COMPLETE OVERHAUL ── */
+    .site-header {
+      background:
+        linear-gradient(150deg,
+          #020812 0%,
+          #060f28 15%,
+          #0a1a45 35%,
+          #0f2d6b 60%,
+          #142f5e 80%,
+          #0d2455 100%) !important;
+      padding: 0 !important;
+      border-radius: 0 0 28px 28px !important;
+      box-shadow:
+        0 24px 80px rgba(2,8,18,0.55),
+        0 8px 24px rgba(2,8,18,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.06) !important;
+      position: relative;
+      overflow: hidden;
+      min-height: auto !important;
+    }
+    .site-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 90% 80% at 80% -20%, rgba(200,146,42,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 70% at -10% 120%, rgba(26,61,122,0.5) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Grid overlay texture */
+    .header-grid-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* Decorative orbs */
+    .header-bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(60px);
+    }
+    .header-bg-orb-1 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(200,146,42,0.12), transparent 70%);
+      top: -80px; right: 10%;
+    }
+    .header-bg-orb-2 {
+      width: 250px; height: 250px;
+      background: radial-gradient(circle, rgba(26,61,122,0.35), transparent 70%);
+      bottom: -60px; left: -30px;
+    }
+
+    .header-inner {
+      position: relative; z-index: 2;
+      padding: 1.8rem 2rem 1.5rem !important;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: nowrap;
+    }
+
+    /* Logo emblem */
+    .header-logo-emblem {
+      width: 52px; height: 52px;
+      background: rgba(200,146,42,0.12);
+      border: 1.5px solid rgba(200,146,42,0.35);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    /* Brand block */
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      min-width: 0;
+    }
+    .header-brand-text { min-width: 0; }
+
+    .header-brand-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(200,146,42,0.8);
+      margin-bottom: 0.3rem;
+      white-space: nowrap;
+      max-width: 320px;
+    }
+    .header-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #c8922a;
+      display: inline-block;
+      box-shadow: 0 0 6px rgba(200,146,42,0.8);
+      animation: pulse-dot 2s infinite;
+    }
+
+    .header-brand-name {
+      font-family: var(--font-display), 'Georgia', serif !important;
+      font-size: clamp(1.2rem, 2.8vw, 1.85rem) !important;
+      line-height: 1.2 !important;
+      font-style: normal !important;
+      font-weight: 400 !important;
+      margin: 0 0 0.25rem !important;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      max-width: 320px;
+    }
+    .brand-first {
+      color: #ffffff;
+      font-style: italic;
+    }
+    .brand-abroad {
+      background: linear-gradient(135deg, #e8b84b, #f0c96a, #c8922a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-style: italic;
+      padding: 0 0.15em;
+    }
+    .brand-edu {
+      color: rgba(255,255,255,0.75);
+      font-style: italic;
+    }
+
+    .header-brand-tagline {
+      font-size: 0.75rem !important;
+      color: rgba(255,255,255,0.48) !important;
+      margin: 0 !important;
+      letter-spacing: 0.02em;
+      font-weight: 400;
+    }
+
+    /* Trust badges */
+    .header-trust-badges {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: nowrap;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      white-space: nowrap;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+    .trust-badge:hover {
+      background: rgba(200,146,42,0.15);
+      border-color: rgba(200,146,42,0.35);
+      color: #e8b84b;
+    }
+    .trust-badge svg { opacity: 0.7; }
+
+    /* Header accent bar */
+    .header-accent-bar {
+      height: 3px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(200,146,42,0.4) 10%,
+        #c8922a 30%,
+        #f0c96a 50%,
+        #c8922a 70%,
+        rgba(200,146,42,0.4) 90%,
+        transparent 100%);
+      background-size: 200% auto;
+      animation: shimmer 5s linear infinite;
+    }
+
+    /* Header controls */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .theme-toggle, .print-btn {
+      width: 38px !important; height: 38px !important;
+      border-radius: 10px !important;
+      background: rgba(255,255,255,0.08) !important;
+      border: 1px solid rgba(255,255,255,0.14) !important;
+      color: rgba(255,255,255,0.75) !important;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .theme-toggle:hover, .print-btn:hover {
+      background: rgba(200,146,42,0.2) !important;
+      border-color: rgba(200,146,42,0.4) !important;
+      color: #e8b84b !important;
+      transform: translateY(-1px);
+    }
+
+    /* Mobile header */
+    @media (max-width: 1050px) {
+      .header-trust-badges { display: none; }
+    }
+    @media (max-width: 768px) {
+      .header-inner {
+        padding: 1.4rem 1.2rem 1.1rem !important;
+        gap: 0.9rem;
+        flex-wrap: wrap;
+      }
+      .header-brand-name { font-size: 1.25rem !important; white-space: normal !important; }
+      .header-logo-emblem { width: 42px; height: 42px; border-radius: 11px; }
+      .header-brand-eyebrow { white-space: normal !important; }
+    }
+
+    /* ── PREMIUM NOTICE STRIPS ── */
+    .notice-strip {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.4rem;
+      border-radius: 14px;
+      margin-bottom: 1rem;
+      border-left: 4px solid;
+      position: relative;
+      overflow: hidden;
+    }
+    .notice-strip::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .notice-info {
+      background: linear-gradient(135deg, rgba(15,45,107,0.07), rgba(26,61,122,0.04));
+      border-left-color: var(--fl-navy-light);
+      border: 1px solid rgba(26,61,122,0.15);
+      border-left: 4px solid var(--fl-navy-light);
+    }
+    .notice-success {
+      background: linear-gradient(135deg, rgba(20,100,50,0.07), rgba(16,120,60,0.04));
+      border-left-color: #14a44d;
+      border: 1px solid rgba(20,164,77,0.18);
+      border-left: 4px solid #14a44d;
+    }
+    .notice-icon-wrap {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .notice-info .notice-icon-wrap {
+      background: rgba(26,61,122,0.1);
+      color: var(--fl-navy-light);
+    }
+    .notice-success .notice-icon-wrap {
+      background: rgba(20,164,77,0.1);
+      color: #14a44d;
+    }
+    .notice-content { flex: 1; min-width: 0; }
+    .notice-title {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--fl-text-dark);
+      margin-bottom: 0.2rem;
+    }
+    .notice-body {
+      font-size: 0.82rem;
+      color: var(--fl-text-muted);
+      line-height: 1.55;
+      margin: 0;
+    }
+    .notice-body strong { color: var(--fl-text-dark); }
+    .notice-contact-pill, .notice-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .notice-contact-pill {
+      background: #25d366;
+      color: #fff;
+    }
+    .notice-badge-pill {
+      background: linear-gradient(135deg, #14a44d, #16be5e);
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .notice-contact-pill, .notice-badge-pill { display: none; }
+    }
+
+    /* ── PROGRESS CARD UPGRADE ── */
+    .progress-card {
+      background: #ffffff !important;
+      border: 1px solid rgba(26,61,122,0.1) !important;
+      border-radius: 18px !important;
+      padding: 1.4rem 1.6rem !important;
+      box-shadow: 0 4px 24px rgba(10,28,62,0.07), 0 1px 4px rgba(10,28,62,0.04) !important;
+      position: relative; overflow: hidden;
+    }
+    .progress-card::before {
+      content:'';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--fl-navy-light), var(--fl-gold-main), var(--fl-navy-light));
+      background-size: 200% auto;
+      animation: shimmer 5s linear infinite;
+    }
+    .progress-label {
+      font-size: 0.72rem !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.1em !important;
+      font-weight: 800 !important;
+      color: var(--fl-navy-light) !important;
+    }
+    .progress-count {
+      font-size: 0.85rem !important;
+      font-weight: 700 !important;
+      color: var(--fl-gold-main) !important;
+    }
+
+    /* ── SECTION CARDS UPGRADE ── */
+    .section-card, .form-card {
+      background: #ffffff !important;
+      border: 1px solid rgba(26,61,122,0.08) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 2px 16px rgba(10,28,62,0.05), 0 1px 4px rgba(10,28,62,0.03) !important;
+      overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s !important;
+    }
+    .section-card:hover, .form-card:hover {
+      box-shadow: 0 8px 32px rgba(10,28,62,0.1), 0 2px 8px rgba(10,28,62,0.05) !important;
+    }
+    .section-header, .card-header {
+      background:
+        linear-gradient(135deg,
+          #030b20 0%,
+          #08173a 30%,
+          #0f2d6b 70%,
+          #142e62 100%) !important;
+      padding: 1.25rem 1.6rem !important;
+      position: relative; overflow: hidden;
+    }
+    .section-header::before, .card-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 80% at 90% 50%, rgba(200,146,42,0.14) 0%, transparent 60%),
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: auto, 30px 30px, 30px 30px;
+      pointer-events: none;
+    }
+    .section-header::after, .card-header::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(200,146,42,0.6), transparent);
+    }
+    .section-num {
+      background: rgba(200,146,42,0.15) !important;
+      border: 1.5px solid rgba(200,146,42,0.4) !important;
+      color: #e8b84b !important;
+      font-weight: 800 !important;
+      font-size: 1rem !important;
+    }
+    .section-title {
+      color: #ffffff !important;
+      font-size: clamp(0.95rem, 2vw, 1.15rem) !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.01em !important;
+    }
+    .section-subtitle { color: rgba(255,255,255,0.55) !important; }
+    .section-badge {
+      background: rgba(200,146,42,0.18) !important;
+      color: #e8b84b !important;
+      border: 1px solid rgba(200,146,42,0.3) !important;
+      font-weight: 700 !important;
+      font-size: 0.72rem !important;
+    }
+
+    /* ── QUESTION TABLE ROWS ── */
+    .q-number {
+      background: linear-gradient(135deg, var(--fl-navy-light), #2754a0) !important;
+      color: #fff !important;
+      font-weight: 700 !important;
+      font-size: 0.68rem !important;
+      border-radius: 6px !important;
+      padding: 2px 6px !important;
+    }
+    .q-label {
+      font-weight: 700 !important;
+      color: var(--fl-text-dark) !important;
+    }
+    .q-hint { color: var(--fl-text-muted) !important; }
+
+    /* ── INPUTS ── */
+    .form-input, .form-select, .form-textarea {
+      border: 1.5px solid #d4dce8 !important;
+      border-radius: 10px !important;
+      font-size: 0.9rem !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--fl-gold-main) !important;
+      box-shadow: 0 0 0 3.5px rgba(200,146,42,0.15), 0 2px 8px rgba(200,146,42,0.1) !important;
+      outline: none !important;
+    }
+
+    /* ── ACTION BAR ── */
+    .action-section, [class*="action-bar"], .form > div:last-of-type {
+      background:
+        linear-gradient(140deg, #030b20 0%, #08173a 30%, #0f2d6b 70%, #142e62 100%) !important;
+      border-radius: 20px !important;
+      padding: 2rem 1.8rem !important;
+      box-shadow: 0 16px 50px rgba(3,11,32,0.4) !important;
+      border: 1px solid rgba(255,255,255,0.06) !important;
+      position: relative; overflow: hidden;
+    }
+
+    /* ── FOOTER ── */
+    footer, .footer-pro {
+      background:
+        linear-gradient(150deg, #020810 0%, #060f28 40%, #0a1a45 100%) !important;
+      border-radius: 20px !important;
+      border-top: 2px solid rgba(200,146,42,0.25) !important;
+    }
+
+    /* ── SECTION PILLS UPGRADE ── */
+    .section-pill {
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      border-radius: 20px !important;
+      border: 1.5px solid rgba(26,61,122,0.2) !important;
+      color: var(--fl-text-muted) !important;
+      background: transparent !important;
+      transition: all 0.2s !important;
+    }
+    .section-pill:hover {
+      border-color: var(--fl-gold-main) !important;
+      color: var(--fl-gold-main) !important;
+      background: rgba(200,146,42,0.06) !important;
+    }
+    .section-pill.active {
+      background: linear-gradient(135deg, var(--fl-navy-light), #2754a0) !important;
+      border-color: var(--fl-navy-light) !important;
+      color: #fff !important;
+      box-shadow: 0 3px 10px rgba(15,45,107,0.3) !important;
+    }
+    .section-pill.done {
+      background: rgba(20,164,77,0.1) !important;
+      border-color: rgba(20,164,77,0.3) !important;
+      color: #14a44d !important;
+    }
+
+    /* ── DOC ITEMS ── */
+    .doc-item {
+      border-radius: 12px !important;
+      border: 1.5px solid rgba(26,61,122,0.1) !important;
+      transition: all 0.25s !important;
+    }
+    .doc-item:hover {
+      border-color: var(--fl-gold-main) !important;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.07), 0 0 0 1px rgba(200,146,42,0.12) !important;
+      transform: translateY(-3px) !important;
+    }
+    .doc-item.checked {
+      background: rgba(20,164,77,0.04) !important;
+      border-color: rgba(20,164,77,0.25) !important;
+    }
+
+    /* ── RADIO OPTIONS ── */
+    .radio-option label {
+      border-radius: 10px !important;
+      transition: all 0.2s !important;
+    }
+    .radio-option input:checked + label {
+      background: linear-gradient(135deg, rgba(15,45,107,0.08), rgba(26,61,122,0.05)) !important;
+      border-color: var(--fl-navy-light) !important;
+      color: var(--fl-navy-light) !important;
+    }
+
+    /* ── DARK MODE ADJUSTMENTS ── */
+    [data-theme="dark"] .notice-info {
+      background: rgba(26,61,122,0.15) !important;
+    }
+    [data-theme="dark"] .notice-success {
+      background: rgba(20,100,50,0.15) !important;
+    }
+    [data-theme="dark"] .progress-card {
+      background: rgba(255,255,255,0.04) !important;
+    }
+    [data-theme="dark"] .section-card, [data-theme="dark"] .form-card {
+      background: rgba(255,255,255,0.03) !important;
+      border-color: rgba(255,255,255,0.06) !important;
+    }
+    [data-theme="dark"] .notice-title { color: #fff !important; }
+    [data-theme="dark"] .notice-body { color: rgba(255,255,255,0.6) !important; }
+    [data-theme="dark"] .notice-body strong { color: rgba(255,255,255,0.9) !important; }
+    [data-theme="dark"] body {
+      background: #040d1e !important;
+    }
+
   </style>
 </head>
 <body>
+  <!-- AUTO-SAVE RESTORE BANNER -->
+  <div id="restore-banner">
+    <div class="rb-msg">
+      <div class="rb-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8922a" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </div>
+      <div>
+        <strong style="display:block;font-size:0.92rem">You have saved progress!</strong>
+        <span style="opacity:0.8;font-size:0.8rem">Your previous form data was found. Restore it?</span>
+      </div>
+    </div>
+    <div class="rb-actions">
+      <button class="rb-btn rb-btn-yes" onclick="restoreSavedData()">✓ Restore my data</button>
+      <button class="rb-btn rb-btn-no" onclick="dismissRestoreBanner(true)">Start fresh</button>
+    </div>
+  </div>
+
+  <!-- AUTO-SAVE TOAST -->
+  <div id="autosave-toast">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+    Progress saved
+  </div>
+
+
 
 <!-- ── HEADER ── -->
 <div class="page-wrapper">
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
+    <!-- Decorative background elements -->
+    <div class="header-bg-orb header-bg-orb-1"></div>
+    <div class="header-bg-orb header-bg-orb-2"></div>
+    <div class="header-grid-overlay"></div>
+
     <div class="header-inner">
-      <div class="header-logo">
-        <div class="logo-mark" style="font-size:1rem;letter-spacing:-0.5px;line-height:1.1;text-align:center">1st<br>LINE</div>
-        <div class="header-titles">
-          <div class="header-eyebrow">Dr. Zeshan Gondal · WhatsApp: +92 343 6058898</div>
-          <h1 class="header-title">Firstliners Education Consulting</h1>
-          <p class="header-subtitle">Your trusted gateway to 100+ top Chinese universities · Student Application Form</p>
+      <!-- Logo + Brand -->
+      <div class="header-brand">
+        <div class="header-logo-emblem">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="15" stroke="rgba(200,146,42,0.6)" stroke-width="1.5"/>
+            <path d="M8 16 L16 8 L24 16 L16 24 Z" fill="none" stroke="#c8922a" stroke-width="1.8"/>
+            <circle cx="16" cy="16" r="4" fill="#c8922a"/>
+            <path d="M16 4 L16 8 M16 24 L16 28 M4 16 L8 16 M24 16 L28 16" stroke="rgba(200,146,42,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="header-brand-text">
+          <div class="header-brand-eyebrow">
+            <span class="header-dot"></span>
+            Dr. Zeshan Gondal &nbsp;·&nbsp; WhatsApp: +92 343 6058898
+          </div>
+          <h1 class="header-brand-name">
+            <span class="brand-first">FirstLiners</span><span class="brand-abroad"> Abroad</span><span class="brand-edu"> Education</span>
+          </h1>
+          <p class="header-brand-tagline">Your Trusted Gateway to 100+ Top Chinese Universities</p>
         </div>
       </div>
+
+      <!-- Trust badges (desktop) -->
+      <div class="header-trust-badges">
+        <div class="trust-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Trusted Consultancy</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <span>100+ Universities</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Fast Processing</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
       <div class="header-actions">
         <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <button class="print-btn" onclick="downloadPDF()" aria-label="Download PDF" title="Download filled form as PDF">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         </button>
       </div>
     </div>
+
+    <!-- Bottom accent bar -->
+    <div class="header-accent-bar"></div>
   </header>
 
-  <!-- ── NOTICE ── -->
-  <div class="alert info">
-    <div class="alert-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-primary)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <!-- ── PREMIUM NOTICE BANNERS ── -->
+  <div class="notice-strip notice-info">
+    <div class="notice-icon-wrap">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
     </div>
-    <p class="alert-text"><strong>How to use this form:</strong> Fill every field carefully using your passport. Your Firstliners agent uses this information to complete your official university application online. Wrong or missing data can delay your admission. Contact: <strong>WhatsApp +92 343 6058898</strong></p>
+    <div class="notice-content">
+      <strong class="notice-title">How to complete this form</strong>
+      <p class="notice-body">Fill every field using your passport details exactly. Your FirstLiners Abroad advisor uses this to complete your official university portal application. Incorrect data can delay your admission.</p>
+    </div>
+    <div class="notice-contact-pill">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      +92 343 6058898
+    </div>
   </div>
 
-  <div class="alert info" style="border-color:var(--color-success);background:var(--color-success-light)">
-    <div class="alert-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-success)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <div class="notice-strip notice-success">
+    <div class="notice-icon-wrap">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
     </div>
-    <p class="alert-text"><strong>✓ You can use any email (including Gmail).</strong> Your official Admission Letter and JW202 visa form are sent directly to <strong>admissions@firstlinersabroad.cn</strong> — Firstliners will forward all documents to you. Just provide any email you check regularly.</p>
+    <div class="notice-content">
+      <strong class="notice-title">Use any email address</strong>
+      <p class="notice-body">Your official Admission Letter &amp; JW202 visa form are sent to <strong>admissions@firstlinersabroad.cn</strong> — we forward everything to you. Use any email you check regularly.</p>
+    </div>
+    <div class="notice-badge-pill">✓ Any Email OK</div>
   </div>
 
   <!-- ── PROGRESS ── -->
@@ -1158,15 +1903,38 @@
           <tr>
             <td class="q-meta">
               <span class="q-number">Q16</span>
-              <p class="q-label">Student Photo</p>
-              <p class="q-hint">White background only. Face forward, no hat, no glasses. Head fills 2/3 of photo. JPG format, max 200KB. This appears on your university ID.</p>
+              <p class="q-label">Student Passport Photo <span style="color:#e53e3e;font-weight:700">*Required</span></p>
+              <p class="q-hint">White background only · Face forward · No hat, no glasses · Head fills 2/3 of frame · JPG format, max 2MB · This photo appears on your university application and PDF dossier.</p>
             </td>
             <td class="q-answer">
-              <div class="alert info" style="margin-bottom:0.5rem">
-                <div class="alert-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-primary)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-                <p class="alert-text" style="font-size:var(--text-xs)">Attach the photo file separately to your submission email. Format: <strong>JPG / JPEG</strong> — Max: <strong>200KB</strong></p>
+              <!-- Photo upload card -->
+              <div id="photoUploadCard" style="border:2.5px dashed var(--color-primary);border-radius:14px;padding:1.2rem;background:linear-gradient(135deg,#f0f5ff,#e8f0fe);text-align:center;cursor:pointer;transition:all 0.2s;position:relative;" onclick="document.getElementById('photoFileInput').click()">
+                <div id="photoPreviewWrap" style="display:none;margin-bottom:0.7rem">
+                  <img id="photoPreview" src="" alt="Student photo" style="width:90px;height:120px;object-fit:cover;border-radius:8px;border:3px solid var(--color-primary);box-shadow:0 4px 12px rgba(26,61,122,0.25)" />
+                </div>
+                <div id="photoPlaceholder">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" style="opacity:0.6;margin-bottom:0.5rem"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <p style="font-weight:700;color:var(--color-primary);margin:0 0 0.25rem">Click to upload passport photo</p>
+                  <p style="font-size:0.78rem;color:var(--color-text-muted);margin:0">JPG / PNG · Max 2MB · White background</p>
+                </div>
+                <input type="file" id="photoFileInput" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)" />
               </div>
-              <div class="radio-group">
+              <div id="photoStatus" style="margin-top:0.5rem;font-size:0.8rem;color:var(--color-text-muted);text-align:center"></div>
+
+              <!-- Photo rules -->
+              <div style="background:#fffbea;border:1px solid #f6c90e;border-radius:8px;padding:0.65rem 0.8rem;margin-top:0.75rem">
+                <p style="font-size:0.75rem;font-weight:700;color:#7d5000;margin:0 0 0.3rem">📸 Photo Requirements:</p>
+                <ul style="font-size:0.74rem;color:#7d5000;margin:0;padding-left:1.1rem;line-height:1.7">
+                  <li>Plain white background</li>
+                  <li>Face forward, eyes open, neutral expression</li>
+                  <li>No hat, sunglasses or face covering</li>
+                  <li>Head + shoulders, face fills ≥ 70% of frame</li>
+                  <li>Recent photo (taken within last 6 months)</li>
+                </ul>
+              </div>
+
+              <!-- Photo ready radio (hidden but kept for PDF logic) -->
+              <div class="radio-group" style="margin-top:0.6rem;display:none">
                 <div class="radio-option"><input type="radio" name="q16" id="q16y" value="Photo ready" /><label for="q16y">✓ Photo ready</label></div>
                 <div class="radio-option"><input type="radio" name="q16" id="q16n" value="Will prepare" /><label for="q16n">Will prepare later</label></div>
               </div>
@@ -1288,7 +2056,7 @@
             <td class="q-meta">
               <span class="q-number">Q22</span>
               <p class="q-label">Main Email Address</p>
-              <p class="q-hint">Any email you check regularly — Gmail is fine. Firstliners handles your official documents.</p>
+              <p class="q-hint">Any email you check regularly — Gmail is fine. FirstLiners Abroad handles your official documents.</p>
               <p class="q-example">e.g. tariq.khan2004@gmail.com  |  amara.joy@yahoo.com</p>
             </td>
             <td class="q-answer">
@@ -1363,7 +2131,7 @@
             <td class="q-meta">
               <span class="q-number">Q28</span>
               <p class="q-label">Student Email Address</p>
-              <p class="q-hint" style="color:var(--color-success);font-weight:600">✓ Official documents (Admission Letter + JW202) go to <strong>admissions@firstlinersabroad.cn</strong>. Firstliners forwards everything to you. Provide an email you check daily.</p>
+              <p class="q-hint" style="color:var(--color-success);font-weight:600">✓ Official documents (Admission Letter + JW202) go to <strong>admissions@firstlinersabroad.cn</strong>. FirstLiners Abroad forwards everything to you. Provide an email you check daily.</p>
               <p class="q-example">e.g. amara.joy@yahoo.com  |  yusuf.omar99@gmail.com</p>
             </td>
             <td class="q-answer">
@@ -1885,7 +2653,7 @@
         <div class="doc-item" onclick="toggleDoc(this)">
           <div class="doc-header"><div class="doc-checkbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p class="doc-title">Application Fee Payment Receipt</p></div>
           <span class="doc-tag">Required</span>
-          <p class="doc-desc"><strong>PKR 2,000</strong> — Firstliners Education Consulting application fee (same for all universities). Pay via bank transfer or EasyPaisa/JazzCash — details provided by your agent. Non-refundable. JPG/PDF, max 2MB.</p>
+          <p class="doc-desc"><strong>PKR 2,000</strong> — FirstLiners Abroad Education application fee (same for all universities). Pay via bank transfer or EasyPaisa/JazzCash — details provided by your agent. Non-refundable. JPG/PDF, max 2MB.</p>
         </div>
 
         <div class="doc-item" onclick="toggleDoc(this)">
@@ -1999,7 +2767,7 @@
     <h2 class="submit-title">Before You Submit — Final Checklist</h2>
     <ul class="checklist-final">
       <li>All personal information matches your passport exactly</li>
-      <li>Your student email is active — Firstliners will forward all official documents to admissions@firstlinersabroad.cn</li>
+      <li>Your student email is active — FirstLiners Abroad will forward all official documents to admissions@firstlinersabroad.cn</li>
       <li>All documents are clear, readable scans (not blurry)</li>
       <li>Documents not in English/Chinese have notarized translations</li>
       <li>Physical exam and police certificate are within 6 months</li>
@@ -2020,6 +2788,10 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Send My Form via WhatsApp
       </button>
+      <button type="button" onclick="clearSavedData()" title="Clear all saved progress" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.2);padding:9px 16px;border-radius:30px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.6)'">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        Clear saved data
+      </button>
     </div>
   </div>
 
@@ -2029,9 +2801,9 @@
     <div style="background:linear-gradient(135deg,#1a3a6e 0%,#1a4a8a 100%);padding:var(--space-6) var(--space-8);display:flex;align-items:center;gap:var(--space-5)">
       <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-display);font-size:1.6rem;font-style:italic;color:#fff;font-weight:700;letter-spacing:-1px">ZG</div>
       <div>
-        <p style="font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);font-weight:700;margin:0 0 4px">Your Firstliners Agent</p>
+        <p style="font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);font-weight:700;margin:0 0 4px">Your FirstLiners Abroad Agent</p>
         <p style="font-size:var(--text-lg);font-family:var(--font-display);font-style:italic;color:#fff;margin:0;line-height:1.2">Dr. Zeshan Gondal</p>
-        <p style="font-size:var(--text-sm);color:rgba(255,255,255,0.72);margin:4px 0 0">Founder &amp; Director · Firstliners Education Consulting</p>
+        <p style="font-size:var(--text-sm);color:rgba(255,255,255,0.72);margin:4px 0 0">Founder &amp; Director · FirstLiners Abroad Education</p>
       </div>
     </div>
     <!-- Info rows -->
@@ -2085,7 +2857,7 @@
     </div>
     <!-- Tagline -->
     <div style="padding:var(--space-3) var(--space-8);background:var(--color-accent-light);text-align:center">
-      <p style="font-size:var(--text-xs);color:var(--color-accent);font-weight:700;margin:0">Firstliners Education Consulting · 100+ Partner Universities in China · Your Success, Our Mission</p>
+      <p style="font-size:var(--text-xs);color:var(--color-accent);font-weight:700;margin:0">FirstLiners Abroad Education · 100+ Partner Universities in China · Your Success, Our Mission</p>
     </div>
   </div>
 
@@ -2099,7 +2871,7 @@
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
     </div>
     <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-style:italic;margin-bottom:var(--space-3)">Form Ready!</h2>
-    <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6)">Your answers have been prepared. Send this completed form to your agent along with all required documents. Remember to check your student email daily. Firstliners will forward all official documents to you.</p>
+    <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6)">Your answers have been prepared. Send this completed form to your agent along with all required documents. Remember to check your student email daily. FirstLiners Abroad will forward all official documents to you.</p>
     <button onclick="closeModal()" style="background:var(--color-primary);color:#fff;padding:var(--space-3) var(--space-8);border-radius:var(--radius-full);font-weight:700;font-size:var(--text-sm)">Close</button>
   </div>
 </div>
@@ -2149,7 +2921,7 @@
     // ── HEADER & STUDENT CARD ──
     let msg = '';
     msg += '*Assalam o Alaikum Dr. Zeshan,*\n\n';
-    msg += 'I have completed the Firstliners application form. Please find my details below.\n\n';
+    msg += 'I have completed the FirstLiners Abroad application form. Please find my details below.\n\n';
     msg += '━━━━━━━━━━━━━━━━━━━━━━\n';
     msg += '*STUDENT SUMMARY*\n';
     msg += '━━━━━━━━━━━━━━━━━━━━━━\n';
@@ -2233,7 +3005,7 @@
     msg += '━━━━━━━━━━━━━━━━━━━━━━\n';
     msg += '*I am also sending you my completed PDF application form separately in this chat.*\n';
     msg += 'Please process my application at your earliest convenience.\n\n';
-    msg += '_Sent via Firstliners Student Application Guide_';
+    msg += '_Sent via FirstLiners Abroad Education Guide_';
 
     // Trim if too long for wa.me URL
     if (msg.length > 3800) {
@@ -2422,33 +3194,59 @@
   }
 
   // ── PDF DOWNLOAD — Professional Student Dossier v4 ──
+    function handlePhotoUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 3 * 1024 * 1024) {
+      const st = document.getElementById('photoStatus');
+      if (st) { st.textContent = '⚠️ File too large (max 2MB).'; st.style.color='#c0392b'; }
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      window.photoDataUrl = e.target.result;
+      const q16yEl = document.getElementById('q16y');
+      if (q16yEl) q16yEl.checked = true;
+      const preview = document.getElementById('photoPreview');
+      const previewWrap = document.getElementById('photoPreviewWrap');
+      const placeholder = document.getElementById('photoPlaceholder');
+      if (preview) preview.src = e.target.result;
+      if (previewWrap) previewWrap.style.display = 'block';
+      if (placeholder) placeholder.style.display = 'none';
+      const st = document.getElementById('photoStatus');
+      if (st) st.innerHTML = '<span style="color:#14a44d;font-weight:700">✓ Photo uploaded — will appear on PDF cover page.</span>';
+      const card = document.getElementById('photoUploadCard');
+      if (card) { card.style.borderColor='#14a44d'; card.style.background='linear-gradient(135deg,#f0fff4,#e6ffed)'; }
+    };
+    reader.readAsDataURL(file);
+  }
+
   function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const PW = 210, PH = 297, ML = 12, MR = 12, MT = 12;
-    const CW = PW - ML - MR;
+
+    // ── Page constants ──
+    const PW = 210, PH = 297;
+    const ML = 14, MR = 14, MT = 15;
+    const CW = PW - ML - MR;   // 182mm usable width
     let y = MT;
-    let pageNum = 1;
 
     // ── Colour palette ──
     const NAVY   = [15, 52, 107];
-    const NAVY2  = [10, 36, 77];
+    const NAVY2  = [8, 28, 65];
     const GOLD   = [196, 140, 30];
-    const LTGOLD = [255, 248, 220];
+    const LGOLD  = [255, 249, 225];
     const WHITE  = [255, 255, 255];
-    const DARK   = [18, 30, 50];
-    const MUTED  = [90, 100, 120];
-    const FAINT  = [180, 190, 205];
-    const LTBLUE = [235, 242, 255];
-    const LTBLUE2= [245, 249, 255];
-    const LTGRAY = [248, 249, 251];
-    const MID    = [220, 228, 240];
-    const GREEN  = [20, 110, 55];
-    const LTGRN  = [225, 250, 235];
-    const LTRED  = [255, 235, 235];
-    const RED2   = [180, 30, 30];
-    const TEAL   = [15, 100, 120];
-    const PURPLE = [80, 50, 140];
+    const DARK   = [20, 30, 48];
+    const MUTED  = [95, 110, 135];
+    const FAINT  = [185, 195, 210];
+    const LTBLUE = [236, 244, 255];
+    const LTGRAY = [248, 249, 252];
+    const MID    = [215, 225, 238];
+    const GREEN  = [20, 115, 60];
+    const LTGRN  = [228, 252, 238];
+    const RED2   = [175, 30, 30];
+    const TEAL   = [0, 110, 120];
 
     const set  = (r,g,b) => doc.setTextColor(r,g,b);
     const fill = (r,g,b) => doc.setFillColor(r,g,b);
@@ -2456,158 +3254,155 @@
     const fv   = id => { const e = document.getElementById(id); return e ? (e.value||'').trim() : ''; };
     const rv   = nm => { const e = document.querySelector('input[name="'+nm+'"]:checked'); return e ? e.value : ''; };
 
-    // ── Page overflow guard ──
-    const checkY = need => {
-      if (y + need > PH - 14) { addFooter(); doc.addPage(); y = MT + 2; }
-    };
-
     // ── Footer ──
     function addFooter() {
       const pg = doc.getNumberOfPages();
-      fill(...NAVY2); doc.rect(0, PH - 9, PW, 9, 'F');
-      fill(...GOLD);  doc.rect(0, PH - 9, PW, 0.8, 'F');
-      set(...WHITE); doc.setFont('helvetica','normal'); doc.setFontSize(6);
-      doc.text('Firstliners Education Consulting  ·  Dr. Zeshan Gondal  ·  WA: +92 343 6058898  ·  admissions@firstlinersabroad.cn', ML, PH - 3.2);
-      doc.text('Page ' + pg, PW - MR, PH - 3.2, { align: 'right' });
+      fill(...NAVY2); doc.rect(0, PH - 11, PW, 11, 'F');
+      fill(...GOLD);  doc.rect(0, PH - 11, PW, 1.2, 'F');
+      set(...WHITE); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+      doc.text('FirstLiners Abroad Education  ·  Dr. Zeshan Gondal  ·  WA: +92 343 6058898  ·  admissions@firstlinersabroad.cn', ML, PH - 4);
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      doc.text('Page ' + pg + ' of ' + '—', PW - MR, PH - 4, { align: 'right' });
     }
 
-    // ── Section header ──
+    // ── Page overflow guard ──
+    const FOOTER_H = 14;
+    const checkY = need => {
+      if (y + need > PH - FOOTER_H) {
+        addFooter();
+        doc.addPage();
+        y = MT + 2;
+        addPageBg();
+      }
+    };
+
+    // ── Subtle page background ──
+    function addPageBg() {
+      fill(252, 253, 255); doc.rect(0, 0, PW, PH, 'F');
+      fill(...NAVY); doc.rect(0, 0, 3.5, PH, 'F');
+      fill(...GOLD); doc.rect(3.5, 0, 1.2, PH, 'F');
+    }
+
+    // ── Section header (full-width navy bar) ──
     function secHead(num, title) {
-      checkY(13);
-      fill(...NAVY); doc.rect(ML, y, CW, 10, 'F');
-      fill(...GOLD); doc.rect(ML, y, 3.5, 10, 'F');
-      // number badge
-      fill(...NAVY2); doc.roundedRect(ML + 5, y + 1.5, 7, 7, 1.2, 1.2, 'F');
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(6);
-      doc.text(num, ML + 8.5, y + 6.2, { align:'center' });
-      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(9);
-      doc.text(title, ML + 15, y + 7);
-      y += 13;
+      checkY(16);
+      const H = 13;
+      fill(...NAVY2); doc.rect(ML, y, CW, H, 'F');
+      fill(...GOLD);  doc.rect(ML, y, 4, H, 'F');
+      // Number badge
+      fill(...GOLD); doc.roundedRect(ML + 7, y + 2, 9, 9, 1.5, 1.5, 'F');
+      set(...NAVY2); doc.setFont('helvetica','bold'); doc.setFontSize(7);
+      doc.text(num, ML + 11.5, y + 7.5, { align:'center' });
+      // Title
+      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(10.5);
+      doc.text(title, ML + 20, y + 9);
+      y += H + 4;
     }
 
-    // ── Sub-header ──
+    // ── Sub-header (golden accent bar) ──
     function subHead(title) {
-      checkY(9);
-      fill(...LTBLUE); doc.rect(ML, y, CW, 7, 'F');
-      draw(...MID); doc.rect(ML, y, CW, 7, 'S');
-      fill(...GOLD); doc.rect(ML, y, 2.5, 7, 'F');
-      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-      doc.text(title, ML + 5, y + 5);
-      y += 9;
+      checkY(12);
+      fill(...LTBLUE); doc.rect(ML, y, CW, 9, 'F');
+      draw(...MID); doc.rect(ML, y, CW, 9, 'S');
+      fill(...GOLD); doc.rect(ML, y, 3.5, 9, 'F');
+      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+      doc.text(title, ML + 7, y + 6.5);
+      y += 12;
     }
 
-    // ── Standard row (full-width, label left + value right) ──
-    const LW = CW * 0.38;
+    // ── Standard row — label left, value right ──
+    const LW = CW * 0.36;
+    const VW = CW - LW;
     function row(label, value, shade) {
       const val = (value || '').toString().trim();
       const disp = val || '—';
-      const lines = doc.splitTextToSize(disp, CW - LW - 6);
-      const rH = Math.max(6.5, lines.length * 4.0 + 3.5);
+      const wrappedLines = doc.splitTextToSize(disp, VW - 8);
+      const rH = Math.max(9, wrappedLines.length * 5.2 + 5);
       checkY(rH);
+      // Background
       fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
-      draw(...MID); doc.rect(ML, y, CW, rH, 'S');
-      // dot
-      if (val) { fill(...NAVY); } else { fill(...FAINT); }
-      doc.circle(ML + 2.2, y + rH / 2, 1.0, 'F');
-      // label
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
-      const labelLines = doc.splitTextToSize(label, LW - 6);
-      doc.text(labelLines, ML + 5, y + rH / 2, { baseline:'middle' });
-      // divider
-      draw(...MID); doc.line(ML + LW, y, ML + LW, y + rH);
-      // value
-      set(val ? DARK[0]:FAINT[0], val ? DARK[1]:FAINT[1], val ? DARK[2]:FAINT[2]);
-      doc.setFont('helvetica', val ? 'normal' : 'italic'); doc.setFontSize(7.5);
-      doc.text(lines, ML + LW + 3, y + rH / 2, { baseline:'middle' });
+      draw(...MID); doc.setLineWidth(0.18); doc.rect(ML, y, CW, rH, 'S');
+      // Left status dot
+      fill(val ? NAVY[0] : FAINT[0], val ? NAVY[1] : FAINT[1], val ? NAVY[2] : FAINT[2]);
+      doc.circle(ML + 3, y + rH/2, 1.4, 'F');
+      // Label
+      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(7);
+      const lblLines = doc.splitTextToSize(label, LW - 8);
+      doc.text(lblLines, ML + 6.5, y + rH/2, { baseline:'middle' });
+      // Divider
+      fill(MID[0], MID[1], MID[2]); doc.rect(ML + LW, y, 0.3, rH, 'F');
+      // Value
+      set(val ? DARK[0] : FAINT[0], val ? DARK[1] : FAINT[1], val ? DARK[2] : FAINT[2]);
+      doc.setFont('helvetica', val ? 'normal' : 'italic');
+      doc.setFontSize(8.5);
+      doc.text(wrappedLines, ML + LW + 4, y + rH/2, { baseline:'middle' });
       y += rH;
     }
 
-    // ── Two-column pair (compact, side-by-side) ──
+    // ── Two-column pair ──
     function rowPair(lbl1, val1, lbl2, val2, shade) {
       const HW = CW / 2;
       const v1 = (val1||'').trim(), v2 = (val2||'').trim();
-      const rH = 6.5;
+      const rH = 9;
       checkY(rH);
-      // left cell
-      fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML, y, HW, rH, 'F');
-      draw(...MID); doc.rect(ML, y, HW, rH, 'S');
-      if (v1) { fill(...NAVY); } else { fill(...FAINT); }
-      doc.circle(ML + 2.2, y + rH/2, 1.0, 'F');
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6);
-      doc.text(lbl1, ML + 4.5, y + 2.8);
-      set(v1?DARK[0]:FAINT[0], v1?DARK[1]:FAINT[1], v1?DARK[2]:FAINT[2]);
-      doc.setFont('helvetica', v1 ? 'normal':'italic'); doc.setFontSize(7);
-      doc.text(v1||'—', ML + 4.5, y + 5.5);
-      // right cell
-      fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML + HW, y, HW, rH, 'F');
-      draw(...MID); doc.rect(ML + HW, y, HW, rH, 'S');
-      if (v2) { fill(...NAVY); } else { fill(...FAINT); }
-      doc.circle(ML + HW + 2.2, y + rH/2, 1.0, 'F');
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6);
-      doc.text(lbl2, ML + HW + 4.5, y + 2.8);
-      set(v2?DARK[0]:FAINT[0], v2?DARK[1]:FAINT[1], v2?DARK[2]:FAINT[2]);
-      doc.setFont('helvetica', v2 ? 'normal':'italic'); doc.setFontSize(7);
-      doc.text(v2||'—', ML + HW + 4.5, y + 5.5);
+      [[lbl1,v1,0],[lbl2,v2,HW]].forEach(([lbl,val,ox]) => {
+        fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML+ox, y, HW, rH, 'F');
+        draw(...MID); doc.setLineWidth(0.18); doc.rect(ML+ox, y, HW, rH, 'S');
+        fill(val ? NAVY[0]:FAINT[0], val ? NAVY[1]:FAINT[1], val ? NAVY[2]:FAINT[2]);
+        doc.circle(ML+ox+3, y+rH/2, 1.3, 'F');
+        set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+        doc.text(lbl, ML+ox+6.5, y+3.8);
+        set(val?DARK[0]:FAINT[0], val?DARK[1]:FAINT[1], val?DARK[2]:FAINT[2]);
+        doc.setFont('helvetica', val?'normal':'italic'); doc.setFontSize(8);
+        doc.text(val||'—', ML+ox+6.5, y+7.8);
+      });
       y += rH;
     }
 
     // ── Three-column row ──
     function rowTriple(lbl1,v1, lbl2,v2, lbl3,v3, shade) {
       const TW = CW / 3;
-      const rH = 6.5;
+      const rH = 9;
       checkY(rH);
       [[lbl1,v1],[lbl2,v2],[lbl3,v3]].forEach(([lbl,val],i) => {
         const vt = (val||'').trim();
-        const x = ML + i * TW;
-        fill(...(shade ? LTGRAY : WHITE)); doc.rect(x, y, TW, rH, 'F');
-        draw(...MID); doc.rect(x, y, TW, rH, 'S');
-        if (vt) { fill(...NAVY); } else { fill(...FAINT); }
-        doc.circle(x + 2.2, y + rH/2, 1.0, 'F');
-        set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(5.8);
-        doc.text(lbl, x + 4.5, y + 2.8);
+        const ox = ML + i * TW;
+        fill(...(shade ? LTGRAY : WHITE)); doc.rect(ox, y, TW, rH, 'F');
+        draw(...MID); doc.setLineWidth(0.18); doc.rect(ox, y, TW, rH, 'S');
+        fill(vt?NAVY[0]:FAINT[0], vt?NAVY[1]:FAINT[1], vt?NAVY[2]:FAINT[2]);
+        doc.circle(ox+3, y+rH/2, 1.3, 'F');
+        set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+        doc.text(lbl, ox+6.5, y+3.8);
         set(vt?DARK[0]:FAINT[0], vt?DARK[1]:FAINT[1], vt?DARK[2]:FAINT[2]);
-        doc.setFont('helvetica', vt ? 'normal':'italic'); doc.setFontSize(6.8);
-        doc.text(vt||'—', x + 4.5, y + 5.5);
+        doc.setFont('helvetica', vt?'normal':'italic'); doc.setFontSize(8);
+        doc.text(vt||'—', ox+6.5, y+7.8);
       });
       y += rH;
     }
 
-    // ── Subject marks table row ──
-    function subjectRow(name, obtained, total, grade, shade) {
-      const rH = 6;
-      checkY(rH);
-      const c1=CW*0.42, c2=CW*0.19, c3=CW*0.19, c4=CW*0.20;
-      fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
-      draw(...MID); doc.rect(ML, y, CW, rH, 'S');
-      // vertical dividers
-      draw(...MID);
-      doc.line(ML+c1, y, ML+c1, y+rH);
-      doc.line(ML+c1+c2, y, ML+c1+c2, y+rH);
-      doc.line(ML+c1+c2+c3, y, ML+c1+c2+c3, y+rH);
-      set(...(name.startsWith('─') ? MUTED : DARK));
-      doc.setFont('helvetica', name.startsWith('─') ? 'italic':'bold'); doc.setFontSize(6.5);
-      doc.text(name.replace(/^─+\s*/,''), ML+3, y+rH/2, {baseline:'middle'});
-      const cols = [[obtained,ML+c1+c2/2],[total,ML+c1+c2+c3/2],[grade,ML+c1+c2+c3+c4/2]];
-      cols.forEach(([v,cx]) => {
-        const vt = (v||'').trim();
-        set(vt?DARK[0]:FAINT[0], vt?DARK[1]:FAINT[1], vt?DARK[2]:FAINT[2]);
-        doc.setFont('helvetica','normal'); doc.setFontSize(7);
-        doc.text(vt||'—', cx, y+rH/2, {baseline:'middle', align:'center'});
-      });
-      y += rH;
-    }
+    // ── Gap between sections ──
+    function gap(mm) { y += mm; }
 
-    // ── Photo placeholder when no image uploaded ──
+    // ── Photo placeholder ──
     function _drawPhotoPlaceholder(px, py, pw, ph) {
-      fill(232, 236, 244); doc.roundedRect(px, py, pw, ph, 2, 2, 'F');
-      draw(...FAINT); doc.roundedRect(px, py, pw, ph, 2, 2, 'S');
-      // Simple person icon
+      fill(235,240,250); doc.roundedRect(px, py, pw, ph, 3, 3, 'F');
+      draw(...FAINT); doc.roundedRect(px, py, pw, ph, 3, 3, 'S');
       fill(...FAINT);
-      doc.circle(px + pw / 2, py + ph * 0.30, pw * 0.14, 'F');
-      doc.ellipse(px + pw / 2, py + ph * 0.68, pw * 0.22, ph * 0.17, 'F');
-      set(...FAINT); doc.setFont('helvetica','italic'); doc.setFontSize(5.5);
-      doc.text('No photo', px + pw / 2, py + ph - 4.5, {align:'center'});
-      doc.text('uploaded', px + pw / 2, py + ph - 1.5, {align:'center'});
+      doc.circle(px+pw/2, py+ph*0.32, pw*0.15, 'F');
+      doc.ellipse(px+pw/2, py+ph*0.68, pw*0.24, ph*0.18, 'F');
+      set(175, 185, 200); doc.setFont('helvetica','italic'); doc.setFontSize(6.5);
+      doc.text('No photo', px+pw/2, py+ph-5, {align:'center'});
+      doc.text('uploaded', px+pw/2, py+ph-1.5, {align:'center'});
+    }
+
+    // ── Badge pill ──
+    function badge(text, bx, by, bgColor, txtColor) {
+      doc.setFontSize(6.5);
+      const tw = doc.getTextWidth(text) + 7;
+      fill(...bgColor); doc.roundedRect(bx, by, tw, 6.5, 1.5, 1.5, 'F');
+      set(...txtColor); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+      doc.text(text, bx+tw/2, by+4.5, {align:'center'});
+      return tw + 3.5;
     }
 
     // ── Read mini-grid fields ──
@@ -2617,7 +3412,7 @@
       const seen = new Set(), out = [];
       body.querySelectorAll('.mini-grid > div').forEach(div => {
         const lbl = div.querySelector('.mini-label');
-        const inp = div.querySelector('input:not([type=radio]), select, textarea');
+        const inp = div.querySelector('input:not([type=radio]),select,textarea');
         if (!lbl || !inp) return;
         const k = lbl.textContent.trim();
         if (seen.has(k)) return; seen.add(k);
@@ -2626,234 +3421,234 @@
       return out;
     }
 
-    // ── Info badge (coloured pill) ──
-    function badge(text, bx, by, bgColor, txtColor) {
-      const tw = doc.getTextWidth(text) + 5;
-      fill(...bgColor); doc.roundedRect(bx, by, tw, 5.5, 1.2, 1.2, 'F');
-      set(...txtColor); doc.setFont('helvetica','bold'); doc.setFontSize(5.5);
-      doc.text(text, bx + tw/2, by + 3.8, {align:'center'});
-      return tw + 3;
+    // ── Subject marks table row ──
+    function subjectRow(name, obtained, total, grade, shade) {
+      const rH = 8;
+      checkY(rH);
+      const c1=CW*0.42, c2=CW*0.19, c3=CW*0.19, c4=CW*0.20;
+      fill(...(shade ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
+      draw(...MID); doc.setLineWidth(0.18); doc.rect(ML, y, CW, rH, 'S');
+      draw(...MID);
+      doc.line(ML+c1, y, ML+c1, y+rH);
+      doc.line(ML+c1+c2, y, ML+c1+c2, y+rH);
+      doc.line(ML+c1+c2+c3, y, ML+c1+c2+c3, y+rH);
+      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+      doc.text(name||'', ML+4, y+rH/2, {baseline:'middle'});
+      [[obtained,ML+c1+c2/2],[total,ML+c1+c2+c3/2],[grade,ML+c1+c2+c3+c4/2]].forEach(([v,cx])=>{
+        const vt=(v||'').trim();
+        set(vt?DARK[0]:FAINT[0], vt?DARK[1]:FAINT[1], vt?DARK[2]:FAINT[2]);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8);
+        doc.text(vt||'—', cx, y+rH/2, {baseline:'middle', align:'center'});
+      });
+      y += rH;
     }
 
-    // ════════════════════════════════════════════════════════
+    // ────────────────────────────────────────────
     //  COVER PAGE
-    // ════════════════════════════════════════════════════════
+    // ────────────────────────────────────────────
+    // Full-bleed deep navy header
+    fill(...NAVY2); doc.rect(0, 0, PW, 58, 'F');
+    fill(...GOLD);  doc.rect(0, 54, PW, 4, 'F');
+    fill(255,255,255,0.06); doc.rect(0, 0, PW, 58, 'F'); // subtle overlay
 
-    // Full-bleed navy header
-    fill(...NAVY2); doc.rect(0, 0, PW, 50, 'F');
-    fill(...GOLD);  doc.rect(0, 46, PW, 4, 'F');
+    // Company name & tagline
+    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(11.5);
+    doc.text('FIRSTLINERS ABROAD EDUCATION', ML, 14);
+    set(200,215,235); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    doc.text('Your Gateway to 100+ Partner Universities in China  ·  admissions@firstlinersabroad.cn  ·  WA: +92 343 6058898', ML, 21.5);
 
-    // Company name
-    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(10);
-    doc.text('FIRSTLINERS EDUCATION CONSULTING', ML, 12);
-    set(...WHITE); doc.setFont('helvetica','normal'); doc.setFontSize(7);
-    doc.text('Your Gateway to 100+ Partner Universities in China  ·  admissions@firstlinersabroad.cn  ·  WA: +92 343 6058898', ML, 19);
-
-    // Title
-    doc.setFont('helvetica','bold'); doc.setFontSize(16);
-    set(...WHITE); doc.text('STUDENT APPLICATION DOSSIER', ML, 32);
-    doc.setFontSize(8); doc.setFont('helvetica','normal');
-    set(180,200,230);
+    // Main title
+    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(19);
+    doc.text('STUDENT APPLICATION DOSSIER', ML, 38);
+    set(160,185,220); doc.setFont('helvetica','normal'); doc.setFontSize(8);
     const genDate = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
-    doc.text('Prepared: ' + genDate, ML, 39);
+    doc.text('Prepared: ' + genDate, ML, 47);
 
-    y = 56;
+    // Thin accent line at very top
+    fill(...GOLD); doc.rect(0, 0, PW, 2.5, 'F');
 
-    // Student ID card
-    const fullName  = fv('q3') || [fv('q2'), fv('q1')].filter(Boolean).join(' ') || 'NOT PROVIDED';
-    const nation    = fv('q6') || '—';
-    const dob       = [fv('q5d'), fv('q5m'), fv('q5y')].filter(Boolean).join('/') || '—';
-    const program   = fv('q40') || '—';
-    const degree    = rv('q41')  || '—';
-    const passNum   = fv('passportNum') || '—';
-    const nicNo     = fv('nicNum') || '—';
-    const bgroup    = fv('bloodGroup') || '—';
-    const stdEmail  = fv('q28') || fv('q22') || '—';
+    y = 66;
 
-    // Card box — with passport photo on right
-    const cardH = 60;
-    const PHOTO_W = 32;
-    const PHOTO_H = 43;
-    const PHOTO_X = ML + CW - PHOTO_W - 5;
-    const PHOTO_Y = y + 11;
-    const TEXT_CW = CW - PHOTO_W - 12;
+    // ── Student ID card ──
+    const fullName = fv('q3') || [fv('q2'),fv('q1')].filter(Boolean).join(' ') || 'NOT PROVIDED';
+    const nation   = fv('q6') || '—';
+    const dob      = [fv('q5d'),fv('q5m'),fv('q5y')].filter(Boolean).join('/') || '—';
+    const program  = fv('q40') || '—';
+    const degree   = rv('q41') || '—';
+    const passNum  = fv('passportNum') || '—';
+    const nicNo    = fv('nicNum') || '—';
+    const bgroup   = fv('bloodGroup') || '—';
+    const stdEmail = fv('q28') || fv('q22') || '—';
 
+    const PHOTO_W = 35, PHOTO_H = 47;
+    const PHOTO_X = ML + CW - PHOTO_W - 3;
+    const TEXT_CW = CW - PHOTO_W - 14;
+    const cardH = 74;
+
+    // Card shadow effect
+    fill(190,200,220); doc.roundedRect(ML+1.5, y+1.5, CW, cardH, 4, 4, 'F');
     // Card background
-    fill(240,245,255); doc.roundedRect(ML, y, CW, cardH, 3, 3, 'F');
-    fill(...NAVY);     doc.roundedRect(ML, y, CW, cardH, 3, 3, 'S');
-    // Top strip
-    fill(...NAVY); doc.roundedRect(ML, y, CW, 9, 3, 3, 'F');
-    doc.rect(ML, y + 6, CW, 3, 'F');
+    fill(245,248,255); doc.roundedRect(ML, y, CW, cardH, 4, 4, 'F');
+    draw(190,200,220); doc.setLineWidth(0.5); doc.roundedRect(ML, y, CW, cardH, 4, 4, 'S'); doc.setLineWidth(0.2);
+    // Card top bar
+    fill(...NAVY); doc.roundedRect(ML, y, CW, 11, 4, 4, 'F');
+    doc.rect(ML, y+7, CW, 4, 'F');
+    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+    doc.text('STUDENT IDENTIFICATION CARD', ML+5, y+7.5);
+    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7);
+    doc.text('FIRSTLINERS ABROAD EDUCATION', ML+CW-5, y+7.5, {align:'right'});
 
-    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
-    doc.text('STUDENT IDENTIFICATION CARD', ML + 4, y + 6);
-    set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(6);
-    doc.text('FIRSTLINERS EDUCATION CONSULTING', PHOTO_X - 2, y + 6, {align:'right'});
+    // Student name
+    set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(15);
+    const nameLines = doc.splitTextToSize(fullName.toUpperCase(), TEXT_CW);
+    doc.text(nameLines, ML+5, y+22);
+    const nameBH = nameLines.length * 6.5;
 
-    // Name (constrained to text column width)
-    set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(12);
-    const nameLines = doc.splitTextToSize(fullName.toUpperCase(), TEXT_CW - 2);
-    doc.text(nameLines, ML + 4, y + 19);
-    const nameBlockH = nameLines.length * 5.5;
+    // Horizontal rule
+    fill(...MID); doc.rect(ML+5, y+24+nameBH, TEXT_CW, 0.4, 'F');
 
-    // Divider under name
-    draw(...MID); doc.line(ML + 4, y + 20 + nameBlockH, ML + TEXT_CW + 4, y + 20 + nameBlockH);
-
-    // Info grid — 2 columns inside text area
-    const infoFields = [
+    // 6 info fields in 2 columns
+    const infoF = [
       ['NATIONALITY',   nation],
       ['DATE OF BIRTH', dob],
       ['PASSPORT NO.',  passNum],
-      ['STUDENT EMAIL', stdEmail.length > 24 ? stdEmail.substring(0,22)+'…' : stdEmail],
-      ['PROGRAM',       program.length > 20 ? program.substring(0,18)+'…' : program],
+      ['STUDENT EMAIL', stdEmail.length>26 ? stdEmail.substring(0,24)+'…' : stdEmail],
+      ['PROGRAM',       program.length>22 ? program.substring(0,20)+'…' : program],
       ['DEGREE LEVEL',  degree],
     ];
     const col2W = TEXT_CW / 2;
-    const infoStartY = y + 23 + nameBlockH;
-    infoFields.forEach(([lbl,val], i) => {
-      const col = i % 2, rowN = Math.floor(i / 2);
-      const ix = ML + 4 + col * col2W;
-      const iy = infoStartY + rowN * 10.5;
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(5.2);
+    const infoY0 = y + 27 + nameBH;
+    infoF.forEach(([lbl,val],i) => {
+      const col = i%2, rowN = Math.floor(i/2);
+      const ix = ML+5+col*col2W;
+      const iy = infoY0 + rowN*13;
+      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6);
       doc.text(lbl, ix, iy);
-      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(7);
-      doc.text(val || '—', ix, iy + 4);
+      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+      doc.text(val||'—', ix, iy+5.5);
     });
 
     // Badges
-    let bx = ML + 4;
-    const by2 = y + cardH - 7;
-    [['BLD: ' + bgroup, NAVY, WHITE], ['CNIC: ' + nicNo, [40,60,100], WHITE]].forEach(([txt, bg, tc]) => {
+    let bx = ML+5;
+    const by2 = y + cardH - 9;
+    [['BLD: '+bgroup, NAVY, WHITE],['CNIC: '+nicNo, [35,55,95], WHITE]].forEach(([txt,bg,tc])=>{
       bx += badge(txt, bx, by2, bg, tc);
     });
 
-    // ── PASSPORT PHOTO BOX ──
-    fill(245,246,250); doc.roundedRect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 2, 2, 'F');
-    draw(...MID); doc.roundedRect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 2, 2, 'S');
+    // Passport photo box
+    const PHOTO_Y = y + 12;
+    fill(240,244,252); doc.roundedRect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 3, 3, 'F');
 
     const photoSrc = window.photoDataUrl || null;
     if (photoSrc && photoSrc.startsWith('data:image')) {
       try {
         const fmt = photoSrc.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-        doc.addImage(photoSrc, fmt, PHOTO_X + 0.5, PHOTO_Y + 0.5, PHOTO_W - 1, PHOTO_H - 1);
-        draw(...NAVY); doc.setLineWidth(0.5);
-        doc.roundedRect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 2, 2, 'S');
+        doc.addImage(photoSrc, fmt, PHOTO_X+0.5, PHOTO_Y+0.5, PHOTO_W-1, PHOTO_H-1);
+        draw(...NAVY); doc.setLineWidth(0.8);
+        doc.roundedRect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H, 3, 3, 'S');
         doc.setLineWidth(0.2);
-      } catch(e) {
-        _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H);
-      }
-    } else {
-      _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H);
-    }
-
-    // "PASSPORT PHOTO" label
-    set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(5.2);
-    doc.text('PASSPORT PHOTO', PHOTO_X + PHOTO_W / 2, PHOTO_Y + PHOTO_H + 4, {align:'center'});
+      } catch(e) { _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H); }
+    } else { _drawPhotoPlaceholder(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H); }
 
     // Gold corner marks
-    draw(...GOLD); doc.setLineWidth(0.8);
-    doc.line(PHOTO_X, PHOTO_Y + 4, PHOTO_X, PHOTO_Y);
-    doc.line(PHOTO_X, PHOTO_Y, PHOTO_X + 4, PHOTO_Y);
-    doc.line(PHOTO_X + PHOTO_W - 4, PHOTO_Y, PHOTO_X + PHOTO_W, PHOTO_Y);
-    doc.line(PHOTO_X + PHOTO_W, PHOTO_Y, PHOTO_X + PHOTO_W, PHOTO_Y + 4);
-    doc.line(PHOTO_X, PHOTO_Y + PHOTO_H - 4, PHOTO_X, PHOTO_Y + PHOTO_H);
-    doc.line(PHOTO_X, PHOTO_Y + PHOTO_H, PHOTO_X + 4, PHOTO_Y + PHOTO_H);
-    doc.line(PHOTO_X + PHOTO_W - 4, PHOTO_Y + PHOTO_H, PHOTO_X + PHOTO_W, PHOTO_Y + PHOTO_H);
-    doc.line(PHOTO_X + PHOTO_W, PHOTO_Y + PHOTO_H, PHOTO_X + PHOTO_W, PHOTO_Y + PHOTO_H - 4);
+    draw(...GOLD); doc.setLineWidth(1.0);
+    [[PHOTO_X,PHOTO_Y],[PHOTO_X+PHOTO_W,PHOTO_Y],[PHOTO_X,PHOTO_Y+PHOTO_H],[PHOTO_X+PHOTO_W,PHOTO_Y+PHOTO_H]].forEach(([cx,cy])=>{
+      const dx=cx===PHOTO_X?5:-5, dy=cy===PHOTO_Y?5:-5;
+      doc.line(cx,cy+dy,cx,cy); doc.line(cx,cy,cx+dx,cy);
+    });
     doc.setLineWidth(0.2);
 
-    y += cardH + 8;
+    set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(5.8);
+    doc.text('PASSPORT PHOTO', PHOTO_X+PHOTO_W/2, PHOTO_Y+PHOTO_H+5, {align:'center'});
 
-    // Quick stats bar
-    const qs = [
-      ['Sections', '10'],
-      ['Degree', degree],
-      ['Program', program.length > 18 ? program.substring(0,16)+'…' : program],
-      ['Nationality', nation],
-    ];
-    fill(...LTBLUE2); doc.roundedRect(ML, y, CW, 12, 2, 2, 'F');
-    draw(...MID); doc.roundedRect(ML, y, CW, 12, 2, 2, 'S');
-    const qsW = CW / qs.length;
-    qs.forEach(([lbl,val], i) => {
-      if (i > 0) { draw(...MID); doc.line(ML + i*qsW, y+2, ML + i*qsW, y+10); }
-      const qx = ML + i*qsW + qsW/2;
-      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(5.5);
-      doc.text(lbl, qx, y + 5, {align:'center'});
-      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-      doc.text(val || '—', qx, y + 10, {align:'center'});
+    y += cardH + 10;
+
+    // ── Quick stats bar ──
+    const qs = [['Sections','10'],['Degree',degree],['Program',program.length>18?program.substring(0,16)+'…':program],['Nationality',nation]];
+    fill(...LTBLUE); doc.roundedRect(ML, y, CW, 15, 3, 3, 'F');
+    draw(...MID); doc.roundedRect(ML, y, CW, 15, 3, 3, 'S');
+    const qsW = CW/qs.length;
+    qs.forEach(([lbl,val],i) => {
+      if (i>0){ draw(...MID); doc.line(ML+i*qsW, y+2.5, ML+i*qsW, y+12.5); }
+      const qx = ML+i*qsW+qsW/2;
+      set(...MUTED); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+      doc.text(lbl, qx, y+6.5, {align:'center'});
+      set(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(9);
+      doc.text(val||'—', qx, y+13, {align:'center'});
     });
+    y += 21;
+
+    // ── Confidential banner ──
+    fill(...LGOLD); doc.roundedRect(ML, y, CW, 13, 3, 3, 'F');
+    draw(...GOLD); doc.setLineWidth(0.6); doc.roundedRect(ML, y, CW, 13, 3, 3, 'S'); doc.setLineWidth(0.2);
+    fill(...GOLD); doc.roundedRect(ML, y, 4, 13, 3, 3, 'F'); doc.rect(ML, y, 4, 13, 'F');
+    set([120,80,10]); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+    doc.text('CONFIDENTIAL DOCUMENT', ML+8, y+5.5);
+    doc.setFont('helvetica','normal'); doc.setFontSize(6.8);
+    doc.text('This dossier is prepared exclusively for FirstLiners Abroad Education admission processing. Do not share with third parties.', ML+8, y+10.5);
     y += 18;
 
-    // Important note
-    checkY(12);
-    fill(...LTGOLD); doc.roundedRect(ML, y, CW, 10, 2, 2, 'F');
-    draw(...GOLD); doc.roundedRect(ML, y, CW, 10, 2, 2, 'S');
-    set(...[120, 80, 10]); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
-    doc.text('⚠  CONFIDENTIAL DOCUMENT', ML + 4, y + 4.5);
-    doc.setFont('helvetica','normal'); doc.setFontSize(6);
-    doc.text('This dossier is prepared exclusively for Firstliners Education Consulting admission processing. Do not share with third parties.', ML + 4, y + 8.5);
-    y += 14;
-
-    // Table of contents
-    checkY(50);
+    // ── Table of contents ──
     subHead('TABLE OF CONTENTS');
     const toc = [
-      ['01', 'Personal Information',                      'Passport, NIC, blood group, personal details'],
-      ['02', 'Home Address',                              'Permanent home address and contact'],
-      ['03', 'Current Address & Student Email',           'Current location and personal email'],
-      ['04', 'Financial Sponsor, Guarantor & Emergency',  'Sponsorship, China guarantor, emergency contact'],
-      ['05', 'Study Plan & Academic Preferences',         'Intended program, degree level, referee'],
-      ['06', 'Education History',                         'Matric, FSc/12th, Bachelor, Master + subject marks'],
-      ['07', 'Work Experience',                           'Employment history and responsibilities'],
-      ['08', 'Family Information',                        'Father, mother, siblings'],
-      ['09', 'Required Documents Checklist',              'All documents with completion status'],
-      ['10', 'Other Information & Declaration',           'Awards, video, declaration and signature'],
+      ['01','Personal Information','Passport, NIC, blood group, personal details'],
+      ['02','Home Address','Permanent home address and contact'],
+      ['03','Current Address & Student Email','Current location and personal email'],
+      ['04','Financial Sponsor, Guarantor & Emergency','Sponsorship, China guarantor, emergency contact'],
+      ['05','Study Plan & Academic Preferences','Intended program, degree level, referee'],
+      ['06','Education History','Matric, FSc/12th, Bachelor, Master + subject marks'],
+      ['07','Work Experience','Employment history and responsibilities'],
+      ['08','Family Information','Father, mother, siblings'],
+      ['09','Required Documents Checklist','All documents with completion status'],
+      ['10','Other Information & Declaration','Awards, video, declaration and signature'],
     ];
-    toc.forEach(([num, title, desc], i) => {
-      const rH = 7.5;
+    toc.forEach(([num,title,desc],i) => {
+      const rH = 10;
       checkY(rH);
       fill(...(i%2===0 ? LTGRAY : WHITE)); doc.rect(ML, y, CW, rH, 'F');
-      draw(...MID); doc.rect(ML, y, CW, rH, 'S');
-      fill(...NAVY); doc.roundedRect(ML+2, y+1.5, 7, 4.5, 1, 1, 'F');
-      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(5.5);
-      doc.text(num, ML+5.5, y+5, {align:'center'});
-      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-      doc.text(title, ML+12, y+5.5);
-      set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(6);
-      doc.text(desc, ML+12, y+7.2);
+      draw(...MID); doc.setLineWidth(0.18); doc.rect(ML, y, CW, rH, 'S');
+      fill(...NAVY); doc.roundedRect(ML+3, y+1.8, 9, 6.5, 1.5, 1.5, 'F');
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+      doc.text(num, ML+7.5, y+6.2, {align:'center'});
+      set(...DARK); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+      doc.text(title, ML+16, y+6.5);
+      set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(7);
+      doc.text(desc, ML+16, y+9);
       y += rH;
     });
 
-    y += 6;
+    y += 8;
     addFooter();
 
-    // ════════════════════════════════════════════════════════
-    //  NEW PAGE — SECTION 01: PERSONAL INFORMATION
-    // ════════════════════════════════════════════════════════
-    doc.addPage(); y = MT + 2;
+    // ════════════════════════════════════════════════
+    //  PAGE 2 — SECTION 01: PERSONAL INFORMATION
+    // ════════════════════════════════════════════════
+    doc.addPage(); y = MT + 2; addPageBg();
     secHead('01', 'PERSONAL INFORMATION');
     let sh = true;
 
     subHead('Name Details');
     rowPair('Surname (Family Name)', fv('q1'), 'Given Name(s)', fv('q2'), sh=!sh);
     row('Full Name as on Passport', fv('q3'), sh=!sh);
+    gap(3);
 
     subHead('Passport Details');
     rowPair('Passport Number', fv('passportNum'), 'Issuing Authority', fv('passportAuthority'), sh=!sh);
     rowTriple('Issue Date', fv('passportIssue'), 'Expiry Date', fv('passportExpiry'), 'Validity Status',
-      (() => {
-        const exp = fv('passportExpiry');
-        if (!exp) return '—';
-        const d = new Date(exp), now = new Date();
-        const months = (d - now) / (1000*60*60*24*30.4);
-        if (months < 0) return 'EXPIRED';
-        if (months < 6) return 'CRITICAL (<6 mo)';
-        if (months < 12) return 'LOW (<12 mo)';
-        return 'VALID (' + Math.floor(months) + ' mo)';
+      (()=>{
+        const exp = fv('passportExpiry'); if (!exp) return '—';
+        const d=new Date(exp), now=new Date();
+        const months=(d-now)/(1000*60*60*24*30.4);
+        if (months<0) return 'EXPIRED';
+        if (months<6) return 'CRITICAL (<6mo)';
+        if (months<12) return 'LOW (<12mo)';
+        return 'VALID ('+Math.floor(months)+'mo)';
       })(), sh=!sh);
+    gap(3);
 
     subHead('National Identity Card (CNIC)');
     rowPair('CNIC Number', fv('nicNum'), 'CNIC Expiry Date', fv('nicExpiry'), sh=!sh);
+    gap(3);
 
     subHead('Personal Details');
     rowPair('Gender', rv('q4'), 'Marital Status', rv('q9'), sh=!sh);
@@ -2862,42 +3657,37 @@
     rowPair('Nationality', fv('q6'), 'Native Language', fv('q11'), sh=!sh);
     rowPair('Religion', fv('q10'), 'Years in Home Country', fv('q12'), sh=!sh);
     rowPair('Currently in China?', rv('q13'), 'Chinese Descent?', rv('q14'), sh=!sh);
+    gap(3);
 
     subHead('Health & Communication');
-    rowTriple('Blood Group', fv('bloodGroup'), 'WeChat ID', fv('q15'), 'Photo Ready?', rv('q16'), sh=!sh);
+    rowTriple('Blood Group', fv('bloodGroup'), 'WeChat ID', fv('q15'), 'Photo Uploaded?', (window.photoDataUrl?'✓ Yes':'Not uploaded'), sh=!sh);
     row('Medical Conditions / Allergies', fv('medicalInfo'), sh=!sh);
+    gap(6);
 
-    y += 4;
-
-    // ════════════════════════════════════════════════════════
-    //  SECTION 02: HOME ADDRESS
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 02: HOME ADDRESS ──
     secHead('02', 'HOME ADDRESS');
     sh = true;
     row('Full Home Address', fv('q17'), sh=!sh);
     rowPair('City / Province', fv('q18'), 'Country', fv('q19'), sh=!sh);
     rowPair('Postal / ZIP Code', fv('q20'), 'Home Phone', fv('q21'), sh=!sh);
     row('Home / Main Email', fv('q22'), sh=!sh);
-    y += 4;
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 03: CURRENT ADDRESS & STUDENT EMAIL
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 03: CURRENT ADDRESS & STUDENT EMAIL ──
     secHead('03', 'CURRENT ADDRESS & STUDENT EMAIL');
     sh = true;
     const sameEl = document.getElementById('sameAddress');
-    row('Current Address', sameEl && sameEl.checked ? 'Same as Home Address' : fv('q23'), sh=!sh);
+    row('Current Address', sameEl&&sameEl.checked ? 'Same as Home Address' : fv('q23'), sh=!sh);
     rowPair('Current City / Province', fv('q24'), 'Current Country', fv('q25'), sh=!sh);
     rowPair('Current Postal Code', fv('q26'), 'Current Phone', fv('q27'), sh=!sh);
     row('Student Email Address', fv('q28'), sh=!sh);
-    y += 4;
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 04: FINANCIAL SPONSOR, GUARANTOR & EMERGENCY
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 04: FINANCIAL SPONSOR ──
     secHead('04', 'FINANCIAL SPONSOR, GUARANTOR & EMERGENCY CONTACT');
     sh = true;
     row('Has Financial Sponsor?', rv('q29'), sh=!sh);
+    gap(2);
 
     subHead('Financial Sponsor Details');
     sh = true;
@@ -2905,6 +3695,7 @@
     rowPair('Relationship to Student', fv('q31'), 'Sponsor Phone', fv('q32'), sh=!sh);
     row('Sponsor Email', fv('q33'), sh=!sh);
     row('Sponsor Full Address', fv('q34'), sh=!sh);
+    gap(3);
 
     subHead('Guarantor in China');
     sh = true;
@@ -2913,55 +3704,47 @@
     if (gContainer) {
       gContainer.querySelectorAll('.mini-grid > div').forEach(div => {
         const lbl=div.querySelector('.mini-label'), inp=div.querySelector('input,select,textarea');
-        if (lbl && inp) row(lbl.textContent.trim(), (inp.value||'').trim(), sh=!sh);
+        if (lbl&&inp) row(lbl.textContent.trim(), (inp.value||'').trim(), sh=!sh);
       });
     }
+    gap(3);
 
     subHead('Emergency Contact');
     sh = true;
     row('Emergency Contact Name', fv('q36'), sh=!sh);
-    rowPair('Relationship to Student', fv('q37') || (()=>{ const e=document.querySelector('#q37'); return e?e.value:''; })(), 'Emergency Phone', fv('q38'), sh=!sh);
+    rowPair('Relationship to Student', fv('q37'), 'Emergency Phone', fv('q38'), sh=!sh);
     row('Emergency Email', fv('q39'), sh=!sh);
-    y += 4;
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 05: STUDY PLAN
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 05: STUDY PLAN ──
     secHead('05', 'STUDY PLAN & ACADEMIC PREFERENCES');
     sh = true;
     row('Intended Major / Program of Study', fv('q40'), sh=!sh);
     rowPair('Degree Level', rv('q41'), 'Language of Instruction', rv('q42'), sh=!sh);
     row('Has Referee at University?', rv('q43'), sh=!sh);
+    gap(2);
     subHead('Referee Details (if applicable)');
     sh = true;
     row('Referee Full Name', fv('q43name'), sh=!sh);
     rowPair('Referee Title / Position', fv('q43title'), 'Referee Email', fv('q43email'), sh=!sh);
-    y += 4;
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 06: EDUCATION HISTORY
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 06: EDUCATION HISTORY ──
     secHead('06', 'EDUCATION HISTORY');
 
-    // MATRIC
     subHead('Level 1 — Matriculation / 10th Grade / O-Level / GCSE');
     sh = true;
-    const matFields = readGrid('matricBody');
-    if (matFields.length) {
-      matFields.forEach(([l,v]) => { row(l, v, sh=!sh); });
-    } else {
-      row('Matric Details', '— Not provided —', sh=!sh);
-    }
+    const matF = readGrid('matricBody');
+    if (matF.length) { matF.forEach(([l,v])=>{ row(l,v,sh=!sh); }); }
+    else { row('Matric Details','— Not provided —',sh=!sh); }
+    gap(3);
 
-    // FSc
     subHead('Level 2 — FSc / 12th Grade / A-Level / HSSC');
     sh = true;
-    const fscFields = readGrid('fscBody');
-    if (fscFields.length) {
-      fscFields.forEach(([l,v]) => { row(l, v, sh=!sh); });
-    } else {
-      row('FSc / 12th Grade Details', '— Not provided —', sh=!sh);
-    }
+    const fscF = readGrid('fscBody');
+    if (fscF.length) { fscF.forEach(([l,v])=>{ row(l,v,sh=!sh); }); }
+    else { row('FSc Details','— Not provided —',sh=!sh); }
+    gap(2);
 
     // Subject marks table
     const subjectRows = [];
@@ -2970,206 +3753,210 @@
       if (cells.length < 4) return;
       const ni = cells[0].querySelector('input');
       const sName = ni ? ni.value.trim() : cells[0].textContent.trim();
-      if (!sName || sName === 'Subject') return;
-      const ob = cells[1]?.querySelector('input')?.value?.trim()||'';
-      const to = cells[2]?.querySelector('input')?.value?.trim()||'';
-      const gr = cells[3]?.querySelector('input')?.value?.trim()||'';
-      subjectRows.push([sName, ob, to, gr]);
+      if (!sName || sName==='Subject') return;
+      subjectRows.push([
+        sName,
+        cells[1]?.querySelector('input')?.value?.trim()||'',
+        cells[2]?.querySelector('input')?.value?.trim()||'',
+        cells[3]?.querySelector('input')?.value?.trim()||''
+      ]);
     });
-
     if (subjectRows.length) {
-      checkY(10);
-      // Table header
-      fill(...NAVY); doc.rect(ML, y, CW, 7, 'F');
+      checkY(14);
+      // Header
+      fill(...NAVY); doc.rect(ML, y, CW, 9, 'F');
       const c1=CW*0.42,c2=CW*0.19,c3=CW*0.19,c4=CW*0.20;
-      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(7);
-      doc.text('Subject / Paper', ML + 3, y + 5);
-      doc.text('Obtained', ML+c1+c2/2, y+5, {align:'center'});
-      doc.text('Max Marks', ML+c1+c2+c3/2, y+5, {align:'center'});
-      doc.text('Grade / %', ML+c1+c2+c3+c4/2, y+5, {align:'center'});
-      y += 7;
-      subjectRows.forEach(([sn,ob,to,gr], si) => subjectRow(sn, ob, to, gr, si%2===0));
-      y += 4;
+      set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+      doc.text('Subject / Paper', ML+4, y+6.5);
+      doc.text('Obtained', ML+c1+c2/2, y+6.5, {align:'center'});
+      doc.text('Max Marks', ML+c1+c2+c3/2, y+6.5, {align:'center'});
+      doc.text('Grade / %', ML+c1+c2+c3+c4/2, y+6.5, {align:'center'});
+      y += 9;
+      subjectRows.forEach(([sn,ob,to,gr],si) => subjectRow(sn,ob,to,gr,si%2===0));
+      gap(5);
     }
 
-    // Bachelor
     subHead("Level 3 — Bachelor's Degree (BSc / BEng / MBBS / BBA)");
     sh = true;
-    const bachFields = readGrid('bachelorBody');
-    if (bachFields.length) {
-      bachFields.forEach(([l,v]) => { row(l, v, sh=!sh); });
-    } else {
-      row("Bachelor's Degree Details", '— Not applicable / Not provided —', sh=!sh);
-    }
+    const bachF = readGrid('bachelorBody');
+    if (bachF.length) { bachF.forEach(([l,v])=>{ row(l,v,sh=!sh); }); }
+    else { row("Bachelor's Degree Details","— Not applicable / Not provided —",sh=!sh); }
+    gap(3);
 
-    // Master
     subHead("Level 4 — Master's Degree (MSc / MBA / MPhil)");
     sh = true;
-    const masterFields = readGrid('masterBody');
-    if (masterFields.length) {
-      masterFields.forEach(([l,v]) => { row(l, v, sh=!sh); });
-    } else {
-      row("Master's Degree Details", '— Not applicable / Not provided —', sh=!sh);
-    }
-    y += 4;
+    const masterF = readGrid('masterBody');
+    if (masterF.length) { masterF.forEach(([l,v])=>{ row(l,v,sh=!sh); }); }
+    else { row("Master's Degree Details","— Not applicable / Not provided —",sh=!sh); }
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 07: WORK EXPERIENCE
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 07: WORK EXPERIENCE ──
     secHead('07', 'WORK EXPERIENCE');
     const workItems = document.querySelectorAll('#workList .repeater-item');
-    workItems.forEach((item, idx) => {
-      if (workItems.length > 1) subHead('Job #' + (idx + 1));
+    if (!workItems.length) { sh=true; row('Work Experience','— None provided —',sh=!sh); }
+    workItems.forEach((item,idx) => {
+      if (workItems.length>1) subHead('Job #'+(idx+1));
       sh = true;
       item.querySelectorAll('.mini-grid > div').forEach(div => {
-        const lbl = div.querySelector('.mini-label'), inp = div.querySelector('input,select,textarea');
-        if (lbl && inp) row(lbl.textContent.trim(), (inp.value||'').trim(), sh=!sh);
+        const lbl=div.querySelector('.mini-label'), inp=div.querySelector('input,select,textarea');
+        if (lbl&&inp) row(lbl.textContent.trim(),(inp.value||'').trim(),sh=!sh);
       });
     });
-    y += 4;
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 08: FAMILY INFORMATION
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 08: FAMILY INFORMATION ──
     secHead('08', 'FAMILY INFORMATION');
 
-    subHead('Father\'s Details');
+    subHead("Father's Details");
     sh = true;
     row('Full Name', fv('fatherName'), sh=!sh);
     rowPair('Date of Birth', fv('fatherDob'), 'Occupation / Job', fv('fatherOcc'), sh=!sh);
     rowPair('Phone Number', fv('fatherPhone'), 'Email Address', fv('fatherEmail'), sh=!sh);
+    gap(3);
 
-    subHead('Mother\'s Details');
+    subHead("Mother's Details");
     sh = true;
     row('Full Name', fv('motherName'), sh=!sh);
     rowPair('Date of Birth', fv('motherDob'), 'Occupation / Job', fv('motherOcc'), sh=!sh);
     rowPair('Phone Number', fv('motherPhone'), 'Email Address', fv('motherEmail'), sh=!sh);
+    gap(3);
 
-    // Siblings
     const sibItems = document.querySelectorAll('#siblingsList .repeater-item');
     let hasSib = false;
-    sibItems.forEach((item, idx) => {
+    sibItems.forEach((item,idx) => {
       const pairs = [];
       item.querySelectorAll('.mini-grid > div').forEach(div => {
-        const lbl = div.querySelector('.mini-label'), inp = div.querySelector('input,select,textarea');
-        if (lbl && inp && (inp.value||'').trim()) pairs.push([lbl.textContent.trim(), inp.value.trim()]);
+        const lbl=div.querySelector('.mini-label'), inp=div.querySelector('input,select,textarea');
+        if (lbl&&inp&&(inp.value||'').trim()) pairs.push([lbl.textContent.trim(),inp.value.trim()]);
       });
       if (pairs.length) {
-        if (!hasSib) { subHead('Siblings'); hasSib = true; sh = true; }
-        subHead('Sibling #' + (idx + 1));
-        sh = true;
-        pairs.forEach(([l,v]) => row(l, v, sh=!sh));
+        if (!hasSib) { subHead('Siblings'); hasSib=true; sh=true; }
+        subHead('Sibling #'+(idx+1));
+        sh=true;
+        pairs.forEach(([l,v])=>row(l,v,sh=!sh));
       }
     });
-    if (!hasSib) {
-      subHead('Siblings');
-      sh = true;
-      row('Siblings', '— None provided —', sh=!sh);
-    }
-    y += 4;
+    if (!hasSib) { subHead('Siblings'); sh=true; row('Siblings','— None provided —',sh=!sh); }
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 09: DOCUMENTS CHECKLIST
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 09: DOCUMENTS CHECKLIST ──
     secHead('09', 'REQUIRED DOCUMENTS CHECKLIST');
 
-    // Count checked
     const allDocs = document.querySelectorAll('.doc-item');
     const checkedCount = document.querySelectorAll('.doc-item.checked').length;
     const totalDocs = allDocs.length;
 
     // Progress bar
-    checkY(10);
-    fill(...LTGRAY); doc.roundedRect(ML, y, CW, 8, 2, 2, 'F');
-    draw(...MID); doc.roundedRect(ML, y, CW, 8, 2, 2, 'S');
-    const prog = totalDocs > 0 ? checkedCount / totalDocs : 0;
-    if (prog > 0) {
-      fill(...GREEN); doc.roundedRect(ML, y, CW * prog, 8, 2, 2, 'F');
+    checkY(13);
+    fill(225,232,245); doc.roundedRect(ML, y, CW, 10, 2.5, 2.5, 'F');
+    draw(...MID); doc.roundedRect(ML, y, CW, 10, 2.5, 2.5, 'S');
+    const prog = totalDocs>0 ? checkedCount/totalDocs : 0;
+    if (prog>0) {
+      fill(...GREEN); doc.roundedRect(ML, y, CW*prog, 10, 2.5, 2.5, 'F');
     }
-    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(7);
-    doc.text(checkedCount + ' of ' + totalDocs + ' documents ready (' + Math.round(prog*100) + '%)', ML + 4, y + 5.5);
-    y += 11;
+    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+    const progText = checkedCount+' of '+totalDocs+' documents ready ('+Math.round(prog*100)+'%)';
+    if (prog > 0.2) {
+      doc.text(progText, ML+5, y+7);
+    } else {
+      set(...DARK);
+      doc.text(progText, ML+CW*prog+4, y+7);
+    }
+    y += 14;
 
-    allDocs.forEach((item, i) => {
-      const title   = item.querySelector('.doc-title')?.textContent?.trim() || '';
-      const tagEl   = item.querySelector('.doc-tag');
-      const tag     = tagEl ? tagEl.textContent.trim() : '';
+    allDocs.forEach((item,i) => {
+      const title = item.querySelector('.doc-title')?.textContent?.trim()||'';
+      const tagEl = item.querySelector('.doc-tag');
+      const tag   = tagEl ? tagEl.textContent.trim() : '';
       const checked = item.classList.contains('checked');
-      const rH = 7;
+      const rH = 9;
       checkY(rH);
-      fill(checked ? LTGRN[0]:LTGRAY[0], checked ? LTGRN[1]:LTGRAY[1], checked ? LTGRN[2]:LTGRAY[2]);
+      fill(checked?LTGRN[0]:LTGRAY[0], checked?LTGRN[1]:LTGRAY[1], checked?LTGRN[2]:LTGRAY[2]);
       doc.rect(ML, y, CW, rH, 'F');
-      draw(...MID); doc.rect(ML, y, CW, rH, 'S');
+      draw(...MID); doc.setLineWidth(0.18); doc.rect(ML, y, CW, rH, 'S');
       if (checked) {
-        fill(...GREEN); doc.roundedRect(ML+2.5, y+1.8, 3.5, 3.5, 0.7, 0.7, 'F');
-        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(5.5); doc.text('✓', ML+2.9, y+5);
+        fill(...GREEN); doc.roundedRect(ML+3, y+2.3, 4.5, 4.5, 1, 1, 'F');
+        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.text('✓', ML+3.7, y+6.2);
       } else {
-        draw(...FAINT); doc.roundedRect(ML+2.5, y+1.8, 3.5, 3.5, 0.7, 0.7, 'S');
+        draw(...FAINT); doc.setLineWidth(0.4); doc.roundedRect(ML+3, y+2.3, 4.5, 4.5, 1, 1, 'S'); doc.setLineWidth(0.18);
       }
       set(checked?GREEN[0]:DARK[0], checked?GREEN[1]:DARK[1], checked?GREEN[2]:DARK[2]);
-      doc.setFont('helvetica', checked?'bold':'normal'); doc.setFontSize(7.5);
-      doc.text(title, ML + 9, y + 5);
+      doc.setFont('helvetica', checked?'bold':'normal'); doc.setFontSize(8.5);
+      doc.text(title, ML+11, y+6.5);
       if (tag) {
-        const tw = doc.getTextWidth(tag) + 4;
-        fill(tag==='Required'?NAVY[0]:GOLD[0], tag==='Required'?NAVY[1]:GOLD[1], tag==='Required'?NAVY[2]:GOLD[2]);
-        doc.roundedRect(PW - MR - tw, y + 1.8, tw, 3.5, 0.8, 0.8, 'F');
-        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(5.5);
-        doc.text(tag, PW - MR - tw/2, y + 4.5, {align:'center'});
+        const tagColor = tag==='Required' ? NAVY : GOLD;
+        const tw = doc.getTextWidth(tag)+7;
+        fill(...tagColor); doc.roundedRect(ML+CW-tw-2, y+2, tw, 5.5, 1, 1, 'F');
+        set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+        doc.text(tag, ML+CW-tw/2-2, y+5.8, {align:'center'});
       }
-      y += 7.5;
+      y += rH;
     });
-    y += 4;
+    gap(6);
 
-    // ════════════════════════════════════════════════════════
-    //  SECTION 10: OTHER INFORMATION & DECLARATION
-    // ════════════════════════════════════════════════════════
+    // ── SECTION 10: OTHER INFORMATION & DECLARATION ──
     secHead('10', 'OTHER INFORMATION & DECLARATION');
     sh = true;
-    row('Self-Introduction Video', rv('q47'), sh=!sh);
-    row('Awards & Achievements', rv('q48'), sh=!sh);
-    row('Nationality Declaration', rv('q49'), sh=!sh);
-    row('Additional Notes / Special Circumstances', fv('q50'), sh=!sh);
-    y += 8;
 
-    // ── SIGNATURE / DECLARATION BLOCK ──
+    // Q47 – Q50
+    [[document.getElementById('q47'),'Awards / Scholarships',true],
+     [document.getElementById('q48'),'Video Introduction URL',true],
+     [document.querySelector('input[name="q49"]:checked'),'Additional Comments',true],
+     [document.getElementById('q50'),'Student Declaration',true]].forEach(([el,lbl,shade])=>{
+      if (!el) return;
+      const val = el.type==='radio' ? el.value : (el.value||'').trim();
+      if (val) row(lbl, val, sh=!sh);
+    });
+
+    // Walk q47-q50 dynamically
+    ['q47','q48','q50'].forEach(id => {
+      const el = document.getElementById(id);
+      const lblMap = {q47:'Awards / Scholarships',q48:'Video Introduction URL',q50:'Declaration / Other Notes'};
+      if (el && (el.value||'').trim()) row(lblMap[id]||(id), el.value.trim(), sh=!sh);
+    });
+    const q49el = document.querySelector('input[name="q49"]:checked');
+    if (q49el) row('Additional Information', q49el.value, sh=!sh);
+
+    gap(5);
+
+    // Declaration box
     checkY(38);
-    fill(240, 244, 252); doc.roundedRect(ML, y, CW, 35, 3, 3, 'F');
-    fill(...NAVY);       doc.roundedRect(ML, y, CW, 35, 3, 3, 'S');
-    fill(...NAVY);       doc.roundedRect(ML, y, CW, 8, 3, 3, 'F');
-    doc.rect(ML, y+5, CW, 3, 'F');
-    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-    doc.text('STUDENT DECLARATION & CERTIFICATION', ML + 4, y + 6);
+    fill(240,244,252); doc.roundedRect(ML, y, CW, 36, 3, 3, 'F');
+    draw(...NAVY); doc.setLineWidth(0.6); doc.roundedRect(ML, y, CW, 36, 3, 3, 'S'); doc.setLineWidth(0.2);
+    fill(...NAVY); doc.roundedRect(ML, y, CW, 9, 3, 3, 'F'); doc.rect(ML, y+5, CW, 4, 'F');
+    set(...WHITE); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+    doc.text('STUDENT DECLARATION', ML+6, y+6.5);
 
-    set(40,50,70); doc.setFont('helvetica','normal'); doc.setFontSize(6.8);
-    const decl = 'I, the undersigned, hereby declare that all information provided in this application dossier is true, accurate and complete to the best of my knowledge and belief. I understand and accept that any false, misleading or incomplete information may result in the immediate rejection of my application, cancellation of admission, or termination of my visa. I authorise Firstliners Education Consulting to use this information solely for the purpose of university application and visa processing on my behalf.';
-    const declLines = doc.splitTextToSize(decl, CW - 8);
-    doc.text(declLines, ML + 4, y + 13);
+    set(...DARK); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    const declText = 'I, '+fullName+', hereby declare that all information provided in this application is true, complete and correct to the best of my knowledge. I understand that any false or misleading information may result in the cancellation of my application or admission.';
+    const declLines = doc.splitTextToSize(declText, CW-14);
+    doc.text(declLines, ML+7, y+16.5);
 
-    // Signature lines
-    draw(140,150,170);
-    doc.line(ML + 4,  y + 29, ML + 60, y + 29);
-    doc.line(ML + 70, y + 29, ML + 120, y + 29);
-    doc.line(ML + 130, y + 29, PW - MR, y + 29);
-    set(...MUTED); doc.setFontSize(6);
-    doc.text('Student Signature', ML + 4,   y + 32);
-    doc.text('Date (DD/MM/YYYY)', ML + 70,  y + 32);
-    doc.text('Firstliners Rep.', ML + 130, y + 32);
+    // Signature line
+    draw(...MID); doc.line(ML+7, y+30, ML+70, y+30);
+    set(...MUTED); doc.setFont('helvetica','normal'); doc.setFontSize(7);
+    doc.text('Student Signature', ML+7, y+34.5);
+    draw(...MID); doc.line(ML+CW-70, y+30, ML+CW-7, y+30);
+    doc.text('Date', ML+CW-70, y+34.5);
+    y += 42;
 
-    y += 40;
+    // ── Final footer on last page ──
+    addFooter();
 
-    // ── UPDATE FOOTERS ON ALL PAGES ──
-    const total = doc.getNumberOfPages();
-    for (let p = 1; p <= total; p++) {
-      doc.setPage(p);
-      fill(...NAVY2); doc.rect(0, PH - 9, PW, 9, 'F');
-      fill(...GOLD);  doc.rect(0, PH - 9, PW, 0.8, 'F');
-      set(...WHITE); doc.setFont('helvetica','normal'); doc.setFontSize(6);
-      doc.text('Firstliners Education Consulting  ·  Dr. Zeshan Gondal  ·  WA: +92 343 6058898  ·  admissions@firstlinersabroad.cn', ML, PH - 3.2);
-      doc.text('Page ' + p + ' of ' + total, PW - MR, PH - 3.2, { align: 'right' });
+    // ── Fix page numbers retroactively ──
+    const totalPages = doc.getNumberOfPages();
+    for (let pg=1; pg<=totalPages; pg++) {
+      doc.setPage(pg);
+      // Overwrite old "Page X of —" with correct total
+      fill(...NAVY2); doc.rect(PW-42, PH-11, 42, 11, 'F');
+      set(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      doc.text('Page '+pg+' of '+totalPages, PW-MR, PH-4, {align:'right'});
     }
 
-    const sname = fv('q1') || fv('q3') || 'student';
-    doc.save('Firstliners-Application-' + sname.toUpperCase().replace(/\s+/g,'_') + '.pdf');
+    // ── Save ──
+    const surname = fv('q1') || 'STUDENT';
+    doc.save('FirstLiners Abroad-Application-'+surname.toUpperCase()+'.pdf');
+    console.log('PDF saved successfully — '+totalPages+' pages');
   }
 
   // ── SUBMIT ──
@@ -3220,3 +4007,217 @@
 
 </body>
 </html>
+  // ════════════════════════════════════════════════════════════
+  //  AUTO-SAVE — persists all form data to localStorage
+  //  Students won't lose progress on accidental refresh
+  // ════════════════════════════════════════════════════════════
+  (function() {
+    const STORAGE_KEY = 'firstliners_form_v1';
+    const PHOTO_KEY   = 'firstliners_photo_v1';
+    let saveTimer = null;
+    let isSaving  = false;
+
+    // ── Collect all form values ──
+    function collectData() {
+      const data = {};
+      // Text inputs, selects, textareas
+      document.querySelectorAll(
+        'input:not([type=radio]):not([type=file]):not([type=checkbox]), select, textarea'
+      ).forEach(el => {
+        if (el.id) data[el.id] = el.value || '';
+        else if (el.name) data['n__' + el.name] = el.value || '';
+      });
+      // Radio buttons — save checked value per name
+      const radioNames = new Set();
+      document.querySelectorAll('input[type=radio]').forEach(el => radioNames.add(el.name));
+      radioNames.forEach(name => {
+        const checked = document.querySelector('input[name="' + name + '"]:checked');
+        data['r__' + name] = checked ? checked.value : '';
+      });
+      // Checkboxes (e.g. sameAddress)
+      document.querySelectorAll('input[type=checkbox]').forEach(el => {
+        if (el.id) data['cb__' + el.id] = el.checked ? '1' : '0';
+      });
+      return data;
+    }
+
+    // ── Restore all form values ──
+    function restoreData(data) {
+      Object.entries(data).forEach(([key, val]) => {
+        if (!val && val !== '0') return;
+        if (key.startsWith('r__')) {
+          // Radio
+          const name = key.slice(3);
+          const el = document.querySelector('input[name="' + name + '"][value="' + CSS.escape(val) + '"]');
+          if (el) { el.checked = true; el.dispatchEvent(new Event('change')); }
+        } else if (key.startsWith('cb__')) {
+          // Checkbox
+          const id = key.slice(4);
+          const el = document.getElementById(id);
+          if (el) { el.checked = val === '1'; el.dispatchEvent(new Event('change')); }
+        } else if (key.startsWith('n__')) {
+          // By name
+          const name = key.slice(3);
+          const el = document.querySelector('[name="' + name + '"]:not([type=radio]):not([type=checkbox])');
+          if (el) { el.value = val; el.dispatchEvent(new Event('input')); }
+        } else {
+          // By ID
+          const el = document.getElementById(key);
+          if (el && el.type !== 'radio' && el.type !== 'checkbox' && el.type !== 'file') {
+            el.value = val;
+            el.dispatchEvent(new Event('input'));
+          }
+        }
+      });
+      // Trigger progress update
+      if (typeof updateProgress === 'function') updateProgress();
+      // Trigger autofill
+      if (typeof autoFillFullName === 'function') autoFillFullName();
+    }
+
+    // ── Show toast ──
+    function showToast() {
+      const toast = document.getElementById('autosave-toast');
+      if (!toast) return;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    // ── Save to localStorage (debounced) ──
+    function scheduleSave() {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        try {
+          const data = collectData();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          // Save photo separately (can be large)
+          if (window.photoDataUrl) {
+            try { localStorage.setItem(PHOTO_KEY, window.photoDataUrl); } catch(e) {}
+          }
+          showToast();
+        } catch(e) {
+          console.warn('Auto-save failed:', e);
+        }
+      }, 800);
+    }
+
+    // ── Attach listeners to all form fields ──
+    function attachListeners() {
+      document.querySelectorAll(
+        'input:not([type=file]), select, textarea'
+      ).forEach(el => {
+        el.addEventListener('input', scheduleSave);
+        el.addEventListener('change', scheduleSave);
+      });
+    }
+
+    // ── Check for saved data on load ──
+    function checkForSavedData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        // Check if it has any non-empty value
+        const hasData = Object.values(data).some(v => v && v.trim && v.trim().length > 0);
+        return hasData ? data : false;
+      } catch(e) { return false; }
+    }
+
+    // ── Public: restore saved data ──
+    window.restoreSavedData = function() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        restoreData(data);
+        // Restore photo
+        const photo = localStorage.getItem(PHOTO_KEY);
+        if (photo && photo.startsWith('data:image')) {
+          window.photoDataUrl = photo;
+          const preview = document.getElementById('photoPreview');
+          const previewWrap = document.getElementById('photoPreviewWrap');
+          const placeholder = document.getElementById('photoPlaceholder');
+          const card = document.getElementById('photoUploadCard');
+          if (preview) preview.src = photo;
+          if (previewWrap) previewWrap.style.display = 'block';
+          if (placeholder) placeholder.style.display = 'none';
+          if (card) { card.style.borderColor='#14a44d'; card.style.background='linear-gradient(135deg,#f0fff4,#e6ffed)'; }
+          const st = document.getElementById('photoStatus');
+          if (st) st.innerHTML = '<span style="color:#14a44d;font-weight:700">✓ Photo restored from saved session.</span>';
+          const q16y = document.getElementById('q16y');
+          if (q16y) { q16y.checked = true; }
+        }
+        dismissRestoreBanner(false);
+        // Show confirmation toast
+        const toast = document.getElementById('autosave-toast');
+        if (toast) {
+          toast.style.background = '#1a3d7a';
+          toast.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Data restored!';
+          toast.classList.add('show');
+          setTimeout(() => { toast.classList.remove('show'); toast.style.background=''; toast.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Progress saved'; }, 2500);
+        }
+      } catch(e) { console.warn('Restore failed:', e); dismissRestoreBanner(false); }
+    };
+
+    // ── Public: dismiss banner ──
+    window.dismissRestoreBanner = function(clearData) {
+      const banner = document.getElementById('restore-banner');
+      if (banner) banner.classList.remove('visible');
+      if (clearData) {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(PHOTO_KEY);
+        window.photoDataUrl = null;
+      }
+    };
+
+    // ── Public: clear all saved data ──
+    window.clearSavedData = function() {
+      if (!confirm('Clear all saved progress? This cannot be undone.')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(PHOTO_KEY);
+      window.photoDataUrl = null;
+      window.location.reload();
+    };
+
+    // ── Init on DOMContentLoaded ──
+    document.addEventListener('DOMContentLoaded', function() {
+      // Small delay so all dynamic elements are rendered
+      setTimeout(() => {
+        attachListeners();
+        const saved = checkForSavedData();
+        if (saved) {
+          const banner = document.getElementById('restore-banner');
+          if (banner) {
+            banner.classList.add('visible');
+            // Auto-dismiss after 15s
+            setTimeout(() => banner.classList.remove('visible'), 15000);
+          }
+        }
+        // Also save on window beforeunload (last chance)
+        window.addEventListener('beforeunload', () => {
+          try {
+            const data = collectData();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            if (window.photoDataUrl) localStorage.setItem(PHOTO_KEY, window.photoDataUrl);
+          } catch(e) {}
+        });
+      }, 600);
+    });
+
+    // ── Also re-attach listeners when repeater items are added ──
+    // (for siblings, work experience dynamic rows)
+    const repeaterObserver = new MutationObserver(() => {
+      attachListeners();
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      const lists = ['workList','siblingsList'];
+      lists.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) repeaterObserver.observe(el, { childList: true, subtree: true });
+      });
+    });
+
+  })();
+
+
+
